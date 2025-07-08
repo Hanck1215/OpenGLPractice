@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/niftiReader.h
+vector
+-
+string
+-
+ios
+-
+fstream
+-
+
+/home/pinecone/OpenGLPractice/test/test001.cpp
+niftiReader.h
+/home/pinecone/OpenGLPractice/test/niftiReader.h
+cstdio
+-
+
