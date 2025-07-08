@@ -57,32 +57,3 @@ float niftiReader::getVoxelOffset(const vector<char> &bytesVector) {
     memcpy(&voxelOffset, bytesVector.data() + 108, sizeof(voxelOffset)); // 複製 nifit 檔案的第 108 個 byte 開始的 4 個 bytes 到 voxelOffset
     return voxelOffset; // 回傳 Voxel offset
 }
-
-// 根據 nifit 檔案的 bytes 向量，以及 X, Y, Z 座標，取得對應的 Voxel 值
-// 注意：這個方法需要根據實際的數據類型和維度來實現
-short niftiReader::getVoxelValue(const vector<char> &bytesVector, int x, int y, int z) {
-    // 取得維度數據
-    vector<short> dim; getDimension(bytesVector, dim);
-
-    // 檢查座標是否在有效範圍內
-    if (x < 0 || x >= dim[1] || y < 0 || y >= dim[2] || z < 0 || z >= dim[3]) {
-        throw out_of_range("Voxel coordinates are out of bounds.");
-    }
-
-    // 取得起始的 Voxel offset
-    float voxelOffset = getVoxelOffset(bytesVector);
-
-    short voxelValue; // 預留 2 bytes 空間，先預設為 short 類型的 Voxel 值，以後要優化這部分再說
-
-    // 計算 Voxel 在 bytesVector 中的偏移量
-    size_t offset = static_cast<size_t>(voxelOffset) + (x + y * dim[1] + z * dim[1] * dim[2]) * sizeof(voxelValue);
-
-    // 檢查偏移量是否在有效範圍內
-    if (offset >= bytesVector.size()) {
-        throw out_of_range("Voxel offset is out of bounds.");
-    }
-
-    // 從 bytesVector 中複製 Voxel 值
-    memcpy(&voxelValue, bytesVector.data() + offset, sizeof(voxelValue));
-    return voxelValue; // 回傳 Voxel 值
-}
