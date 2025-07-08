@@ -5,6 +5,7 @@
 #include <string>
 #include <ios>
 #include <fstream>
+#include <cstring>
 
 using namespace std;
 
@@ -17,6 +18,9 @@ class niftiReader {
 
         // 根據指定的 nifti 檔案路徑，讀取該 nifti 檔案為 bytes 向量
         void readNiftiAsBytes(const string niftiFilePath, vector<char> &outputBytesVector);
+
+        // 根據 nifit 檔案的 bytes 向量，取得標頭大小
+        int getHeaderSize(const vector<char> &bytesVector);
 };
 
 #endif

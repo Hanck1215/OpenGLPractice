@@ -20,3 +20,11 @@ void niftiReader::readNiftiAsBytes(const string niftiFilePath, vector<char> &out
         back_inserter(outputBytesVector)
     );
 }
+
+
+// 根據 nifit 檔案的 bytes 向量，取得標頭大小 (先忽略大小端問題)
+int niftiReader::getHeaderSize(const vector<char> &bytesVector) {
+    int headerSize; // 預留 4 bytes 空間
+    memcpy(&headerSize, bytesVector.data(), sizeof(headerSize)); // 複製 nifit 檔案的前 4 個 bytes 到 headerSize
+    return headerSize; // 回傳 nifit 檔案的標頭大小
+}

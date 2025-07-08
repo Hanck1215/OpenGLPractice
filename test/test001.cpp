@@ -5,6 +5,5 @@ int main(int argc, char **argv) {
     vector<char> outputBytesVector;
     niftiReader niiReader;
     niiReader.readNiftiAsBytes(path, outputBytesVector);
-    int* iptr = reinterpret_cast<int*>(&outputBytesVector[0]);
-    printf("%d\n", *iptr);
+    printf("%d\n", niiReader.getHeaderSize(outputBytesVector));
 }
