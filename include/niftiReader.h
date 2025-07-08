@@ -21,6 +21,15 @@ class niftiReader {
 
         // 根據 nifit 檔案的 bytes 向量，取得標頭大小
         int getHeaderSize(const vector<char> &bytesVector);
+
+        // 根據 nifit 檔案的 bytes 向量，取得 Data array dimensions
+        void getDimension(const vector<char> &bytesVector, vector<short> &dim);
+
+        // 根據 nifit 檔案的 bytes 向量，取得 Number of bits per voxel.
+        short getBitpix(const vector<char> &bytesVector);
+
+        // 根據 nifit 檔案的 bytes 向量，取得 Data type
+        short getDataType(const vector<char> &bytesVector);
 };
 
 #endif
