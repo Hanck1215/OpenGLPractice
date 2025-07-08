@@ -23,4 +23,6 @@ niftiReader.h
 /home/pinecone/OpenGLPractice/test/niftiReader.h
 cstdio
 -
+iostream
+-
 

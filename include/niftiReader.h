@@ -30,6 +30,13 @@ class niftiReader {
 
         // 根據 nifit 檔案的 bytes 向量，取得 Data type
         short getDataType(const vector<char> &bytesVector);
+
+        // 根據 nifit 檔案的 bytes 向量，取得起始的 Voxel offset
+        float getVoxelOffset(const vector<char> &bytesVector);
+
+        // 根據 nifit 檔案的 bytes 向量，以及 X, Y, Z 座標，取得對應的 Voxel 值
+        // 注意：這個方法需要根據實際的數據類型和維度來實現
+        short getVoxelValue(const vector<char> &bytesVector, int x, int y, int z);
 };
 
 #endif
