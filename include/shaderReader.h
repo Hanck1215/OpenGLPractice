@@ -25,14 +25,6 @@ class shaderReader {
 
         // 檢查 shader 編譯是否成功，並輸出錯誤日誌
         void shaderLog(GLuint shader);
-
-        // 輸出 OpenGL 的相關資訊
-        inline static void dumpInfo() {
-            printf("Vendor: %s\n", glGetString(GL_VENDOR));
-            printf("Renderer: %s\n", glGetString(GL_RENDERER));
-            printf("Version: %s\n", glGetString(GL_VERSION));
-            printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-        };
 };
 
 #endif

@@ -125,6 +125,60 @@ myOpenGL/fast:
 	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/build
 .PHONY : myOpenGL/fast
 
+cubeModel.o: cubeModel.cpp.o
+
+.PHONY : cubeModel.o
+
+# target to build an object file
+cubeModel.cpp.o:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/cubeModel.cpp.o
+.PHONY : cubeModel.cpp.o
+
+cubeModel.i: cubeModel.cpp.i
+
+.PHONY : cubeModel.i
+
+# target to preprocess a source file
+cubeModel.cpp.i:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/cubeModel.cpp.i
+.PHONY : cubeModel.cpp.i
+
+cubeModel.s: cubeModel.cpp.s
+
+.PHONY : cubeModel.s
+
+# target to generate assembly for a file
+cubeModel.cpp.s:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/cubeModel.cpp.s
+.PHONY : cubeModel.cpp.s
+
+displayer.o: displayer.cpp.o
+
+.PHONY : displayer.o
+
+# target to build an object file
+displayer.cpp.o:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/displayer.cpp.o
+.PHONY : displayer.cpp.o
+
+displayer.i: displayer.cpp.i
+
+.PHONY : displayer.i
+
+# target to preprocess a source file
+displayer.cpp.i:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/displayer.cpp.i
+.PHONY : displayer.cpp.i
+
+displayer.s: displayer.cpp.s
+
+.PHONY : displayer.s
+
+# target to generate assembly for a file
+displayer.cpp.s:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/displayer.cpp.s
+.PHONY : displayer.cpp.s
+
 niftiReader.o: niftiReader.cpp.o
 
 .PHONY : niftiReader.o
@@ -188,6 +242,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... myOpenGL"
+	@echo "... cubeModel.o"
+	@echo "... cubeModel.i"
+	@echo "... cubeModel.s"
+	@echo "... displayer.o"
+	@echo "... displayer.i"
+	@echo "... displayer.s"
 	@echo "... niftiReader.o"
 	@echo "... niftiReader.i"
 	@echo "... niftiReader.s"

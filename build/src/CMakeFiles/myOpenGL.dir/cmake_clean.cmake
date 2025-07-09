@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "../../lib/libmyOpenGL.pdb"
   "../../lib/libmyOpenGL.so"
+  "CMakeFiles/myOpenGL.dir/cubeModel.cpp.o"
+  "CMakeFiles/myOpenGL.dir/displayer.cpp.o"
   "CMakeFiles/myOpenGL.dir/niftiReader.cpp.o"
   "CMakeFiles/myOpenGL.dir/shaderReader.cpp.o"
 )

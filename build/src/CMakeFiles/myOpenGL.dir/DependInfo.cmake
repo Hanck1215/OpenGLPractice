@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/pinecone/OpenGLPractice/src/cubeModel.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/cubeModel.cpp.o"
+  "/home/pinecone/OpenGLPractice/src/displayer.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/displayer.cpp.o"
   "/home/pinecone/OpenGLPractice/src/niftiReader.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o"
   "/home/pinecone/OpenGLPractice/src/shaderReader.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o"
   )

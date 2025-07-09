@@ -1,0 +1,120 @@
+#include "cubeModel.h"
+
+cubeModel::cubeModel() {
+    // 設定頂點數據
+    vertexPositions = new GLfloat[36 * 3] {
+        -0.25f,  0.25f, -0.25f,
+        -0.25f, -0.25f, -0.25f,
+        0.25f, -0.25f, -0.25f,
+
+        0.25f, -0.25f, -0.25f,
+        0.25f,  0.25f, -0.25f,
+        -0.25f,  0.25f, -0.25f,
+
+        0.25f, -0.25f, -0.25f,
+        0.25f, -0.25f,  0.25f,
+        0.25f,  0.25f, -0.25f,
+
+        0.25f, -0.25f,  0.25f,
+        0.25f,  0.25f,  0.25f,
+        0.25f,  0.25f, -0.25f,
+
+        0.25f, -0.25f,  0.25f,
+        -0.25f, -0.25f,  0.25f,
+        0.25f,  0.25f,  0.25f,
+
+        -0.25f, -0.25f,  0.25f,
+        -0.25f,  0.25f,  0.25f,
+        0.25f,  0.25f,  0.25f,
+
+        -0.25f, -0.25f,  0.25f,
+        -0.25f, -0.25f, -0.25f,
+        -0.25f,  0.25f,  0.25f,
+
+        -0.25f, -0.25f, -0.25f,
+        -0.25f,  0.25f, -0.25f,
+        -0.25f,  0.25f,  0.25f,
+
+        -0.25f, -0.25f,  0.25f,
+        0.25f, -0.25f,  0.25f,
+        0.25f, -0.25f, -0.25f,
+
+        0.25f, -0.25f, -0.25f,
+        -0.25f, -0.25f, -0.25f,
+        -0.25f, -0.25f,  0.25f,
+
+        -0.25f,  0.25f, -0.25f,
+        0.25f,  0.25f, -0.25f,
+        0.25f,  0.25f,  0.25f,
+
+        0.25f,  0.25f,  0.25f,
+        -0.25f,  0.25f,  0.25f,
+        -0.25f,  0.25f, -0.25f
+    };
+    
+    // 初始化著色器讀取器
+    shaderReaderInstance = shaderReader();
+    program = glCreateProgram(); // 創建著色器程序
+    vs = glCreateShader(GL_VERTEX_SHADER); // 創建頂點著色器
+    fs = glCreateShader(GL_FRAGMENT_SHADER); // 創建片段著色器
+
+    // 讀取著色器檔案並將其轉換為二進位數據
+    char** vsBytes;
+    char** fsBytes;
+    shaderReaderInstance.readShaderAsBytes("./glsl/testShader.vs.glsl", vsBytes);
+    shaderReaderInstance.readShaderAsBytes("./glsl/testShader.fs.glsl", fsBytes);
+
+    // 設定著色器源碼
+    glShaderSource(vs, 1, vsBytes, NULL);
+	glShaderSource(fs, 1, fsBytes, NULL);
+
+    // 釋放著色器檔案的記憶體
+    shaderReaderInstance.freeShaderBytes(vsBytes);
+    shaderReaderInstance.freeShaderBytes(fsBytes);
+
+    // 編譯著色器
+    glCompileShader(vs);
+    shaderReaderInstance.shaderLog(vs); // 檢查頂點著色器編譯是否成功
+
+    glCompileShader(fs);
+    shaderReaderInstance.shaderLog(fs); // 檢查片段著色器編譯是否成功
+
+    // 將著色器附加到程序
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+
+    // 獲取模型視圖和投影矩陣的位置
+    mvLocation = glGetUniformLocation(program, "mvMatrix");
+    projLocation = glGetUniformLocation(program, "projMatrix");
+
+    // 初始化模型視圖和投影矩陣
+    mvMatrix = glm::mat4(1.0f);
+    projMatrix = glm::mat4(1.0f);
+
+    // 創建頂點陣列對象和頂點緩衝區對象
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+
+    // 綁定 VAO 和 VBO
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    // 設定頂點屬性指針
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnableVertexAttribArray(0);
+    glBufferData(GL_ARRAY_BUFFER, 36 * 3 * sizeof(GLfloat), vertexPositions, GL_STATIC_DRAW);
+}
+
+void cubeModel::draw() {
+    // 使用著色器程序
+    glUseProgram(program);
+
+    // 更新模型視圖和投影矩陣
+    glUniformMatrix4fv(mvLocation, 1, GL_FALSE, &mvMatrix[0][0]);
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, &projMatrix[0][0]);
+
+    // 綁定 VAO 並繪製立方體
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
