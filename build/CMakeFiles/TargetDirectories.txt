@@ -3,6 +3,6 @@
 /home/pinecone/OpenGLPractice/build/src/CMakeFiles/rebuild_cache.dir
 /home/pinecone/OpenGLPractice/build/src/CMakeFiles/edit_cache.dir
 /home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir
-/home/pinecone/OpenGLPractice/build/test/CMakeFiles/rebuild_cache.dir
 /home/pinecone/OpenGLPractice/build/test/CMakeFiles/edit_cache.dir
-/home/pinecone/OpenGLPractice/build/test/CMakeFiles/test001.dir
+/home/pinecone/OpenGLPractice/build/test/CMakeFiles/rebuild_cache.dir
+/home/pinecone/OpenGLPractice/build/test/CMakeFiles/test002.dir

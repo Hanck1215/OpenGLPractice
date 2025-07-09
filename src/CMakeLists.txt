@@ -2,6 +2,7 @@
 add_library(
     myOpenGL SHARED
     niftiReader.cpp
+    shaderReader.cpp
 )
 
 # 將第三方庫連結到 myOpenGL 共享庫上，確保編譯和連結時能找到所需的外部依賴

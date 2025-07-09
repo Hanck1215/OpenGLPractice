@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/home/pinecone/OpenGLPractice/lib/libmyOpenGL.so"
+			"path" : "/home/pinecone/OpenGLPractice/bin/test002"
 		}
 	],
 	"backtrace" : 1,
@@ -10,13 +10,13 @@
 	{
 		"commands" : 
 		[
-			"add_library",
+			"add_executable",
 			"target_link_libraries",
 			"include_directories"
 		],
 		"files" : 
 		[
-			"src/CMakeLists.txt",
+			"test/CMakeLists.txt",
 			"CMakeLists.txt"
 		],
 		"nodes" : 
@@ -27,13 +27,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 2,
+				"line" : 1,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 8,
+				"line" : 2,
 				"parent" : 0
 			},
 			{
@@ -42,19 +42,19 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 15,
+				"line" : 25,
 				"parent" : 3
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 30,
+				"line" : 41,
 				"parent" : 3
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 14,
+				"line" : 24,
 				"parent" : 3
 			}
 		]
@@ -65,13 +65,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-std=c++17 -O3 -O3 -DNDEBUG -fPIC  "
-				}
-			],
-			"defines" : 
-			[
-				{
-					"define" : "myOpenGL_EXPORTS"
+					"fragment" : "-std=c++17 -O3 -O3 -DNDEBUG  "
 				}
 			],
 			"includes" : 
@@ -101,152 +95,213 @@
 			]
 		}
 	],
-	"id" : "myOpenGL::@145eef247bfb46b6828c",
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "myOpenGL::@145eef247bfb46b6828c"
+		}
+	],
+	"id" : "test002::@36f028580bb02cc8272a",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
 			{
+				"fragment" : "-std=c++17 -O3 -O3 -DNDEBUG",
+				"role" : "flags"
+			},
+			{
 				"fragment" : "",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/usr/local/lib:/home/pinecone/OpenGLPractice/Thirdparty/DBoW2/lib:/home/pinecone/OpenGLPractice/Thirdparty/g2o/lib",
+				"fragment" : "-Wl,-rpath,/home/pinecone/OpenGLPractice/lib:/usr/local/lib:/home/pinecone/OpenGLPractice/Thirdparty/DBoW2/lib:/home/pinecone/OpenGLPractice/Thirdparty/g2o/lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
+				"fragment" : "../../lib/libmyOpenGL.so",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "/usr/local/lib/libopencv_stitching.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_superres.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_videostab.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_aruco.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_bgsegm.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_bioinspired.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_ccalib.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_dnn_objdetect.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_dpm.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"fragment" : "/usr/local/lib/libopencv_highgui.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_videoio.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "/usr/local/lib/libopencv_face.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_freetype.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_fuzzy.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_hfs.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_img_hash.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_line_descriptor.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_optflow.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_reg.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_rgbd.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_saliency.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_stereo.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_structured_light.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"fragment" : "/usr/local/lib/libopencv_phase_unwrapping.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "/usr/local/lib/libopencv_surface_matching.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_tracking.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"fragment" : "/usr/local/lib/libopencv_datasets.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_plot.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_text.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_dnn.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "/usr/local/lib/libopencv_xfeatures2d.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"fragment" : "/usr/local/lib/libopencv_ml.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_shape.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_video.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "/usr/local/lib/libopencv_ximgproc.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libopencv_xobjdetect.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"fragment" : "/usr/local/lib/libopencv_imgcodecs.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_objdetect.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_calib3d.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_features2d.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_flann.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "/usr/local/lib/libopencv_xphoto.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_photo.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_imgproc.so.3.4.9",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_core.so.3.4.9",
 				"role" : "libraries"
 			},
 			{
@@ -262,104 +317,38 @@
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_shape.so.3.4.9",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libOpenGL.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_highgui.so.3.4.9",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libGLX.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_videoio.so.3.4.9",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libGLU.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_phase_unwrapping.so.3.4.9",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libglut.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_video.so.3.4.9",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libXi.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_datasets.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_plot.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_text.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_dnn.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_ml.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_imgcodecs.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_objdetect.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_calib3d.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_features2d.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_flann.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_photo.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_imgproc.so.3.4.9",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/usr/local/lib/libopencv_core.so.3.4.9",
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libGLEW.so",
 				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
-	"name" : "myOpenGL",
-	"nameOnDisk" : "libmyOpenGL.so",
+	"name" : "test002",
+	"nameOnDisk" : "test002",
 	"paths" : 
 	{
-		"build" : "src",
-		"source" : "src"
+		"build" : "test",
+		"source" : "test"
 	},
 	"sourceGroups" : 
 	[
@@ -376,9 +365,9 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/niftiReader.cpp",
+			"path" : "test/test002.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
-	"type" : "SHARED_LIBRARY"
+	"type" : "EXECUTABLE"
 }

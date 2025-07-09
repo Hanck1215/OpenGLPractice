@@ -26,7 +26,7 @@ GL/freeglut.h
 glm/glm.hpp
 -
 
-/home/pinecone/OpenGLPractice/src/shaderReader.cpp
+/home/pinecone/OpenGLPractice/test/test002.cpp
 shaderReader.h
-/home/pinecone/OpenGLPractice/src/shaderReader.h
+/home/pinecone/OpenGLPractice/test/shaderReader.h
 

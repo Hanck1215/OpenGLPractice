@@ -13,7 +13,7 @@
 					],
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.16"
+						"string" : "3.2"
 					},
 					"projectIndex" : 0,
 					"source" : "."
@@ -22,7 +22,7 @@
 					"build" : "src",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.16"
+						"string" : "3.2"
 					},
 					"parentIndex" : 0,
 					"projectIndex" : 0,
@@ -36,7 +36,7 @@
 					"build" : "test",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.16"
+						"string" : "3.2"
 					},
 					"parentIndex" : 0,
 					"projectIndex" : 0,
@@ -70,15 +70,15 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "myOpenGL::@145eef247bfb46b6828c",
-					"jsonFile" : "target-myOpenGL-Release-a9f498853564762366b1.json",
+					"jsonFile" : "target-myOpenGL-Release-ab5759c588d1d51c174d.json",
 					"name" : "myOpenGL",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 2,
-					"id" : "test001::@36f028580bb02cc8272a",
-					"jsonFile" : "target-test001-Release-979a6791bb810aa21b59.json",
-					"name" : "test001",
+					"id" : "test002::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test002-Release-fef6a70ae72cc45f1d56.json",
+					"name" : "test002",
 					"projectIndex" : 0
 				}
 			]

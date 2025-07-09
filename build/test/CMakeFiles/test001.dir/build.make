@@ -127,6 +127,12 @@ test001_EXTERNAL_OBJECTS =
 ../bin/test001: /usr/local/lib/libopencv_core.so.3.4.9
 ../bin/test001: ../Thirdparty/DBoW2/lib/libDBoW2.so
 ../bin/test001: ../Thirdparty/g2o/lib/libg2o.so
+../bin/test001: /usr/lib/x86_64-linux-gnu/libOpenGL.so
+../bin/test001: /usr/lib/x86_64-linux-gnu/libGLX.so
+../bin/test001: /usr/lib/x86_64-linux-gnu/libGLU.so
+../bin/test001: /usr/lib/x86_64-linux-gnu/libglut.so
+../bin/test001: /usr/lib/x86_64-linux-gnu/libXi.so
+../bin/test001: /usr/lib/x86_64-linux-gnu/libGLEW.so
 ../bin/test001: test/CMakeFiles/test001.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pinecone/OpenGLPractice/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../../bin/test001"
 	cd /home/pinecone/OpenGLPractice/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test001.dir/link.txt --verbose=$(VERBOSE)

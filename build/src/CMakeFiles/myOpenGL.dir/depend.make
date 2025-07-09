@@ -4,3 +4,6 @@
 src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o: ../include/niftiReader.h
 src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o: ../src/niftiReader.cpp
 
+src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o: ../include/shaderReader.h
+src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o: ../src/shaderReader.cpp
+

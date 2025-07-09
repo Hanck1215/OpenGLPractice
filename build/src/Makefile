@@ -152,6 +152,33 @@ niftiReader.cpp.s:
 	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.s
 .PHONY : niftiReader.cpp.s
 
+shaderReader.o: shaderReader.cpp.o
+
+.PHONY : shaderReader.o
+
+# target to build an object file
+shaderReader.cpp.o:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o
+.PHONY : shaderReader.cpp.o
+
+shaderReader.i: shaderReader.cpp.i
+
+.PHONY : shaderReader.i
+
+# target to preprocess a source file
+shaderReader.cpp.i:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.i
+.PHONY : shaderReader.cpp.i
+
+shaderReader.s: shaderReader.cpp.s
+
+.PHONY : shaderReader.s
+
+# target to generate assembly for a file
+shaderReader.cpp.s:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.s
+.PHONY : shaderReader.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -164,6 +191,9 @@ help:
 	@echo "... niftiReader.o"
 	@echo "... niftiReader.i"
 	@echo "... niftiReader.s"
+	@echo "... shaderReader.o"
+	@echo "... shaderReader.i"
+	@echo "... shaderReader.s"
 .PHONY : help
 
 

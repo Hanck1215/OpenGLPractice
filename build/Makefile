@@ -124,17 +124,17 @@ myOpenGL/fast:
 .PHONY : myOpenGL/fast
 
 #=============================================================================
-# Target rules for targets named test001
+# Target rules for targets named test002
 
 # Build rule for target.
-test001: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test001
-.PHONY : test001
+test002: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test002
+.PHONY : test002
 
 # fast build rule for target.
-test001/fast:
-	$(MAKE) -f test/CMakeFiles/test001.dir/build.make test/CMakeFiles/test001.dir/build
-.PHONY : test001/fast
+test002/fast:
+	$(MAKE) -f test/CMakeFiles/test002.dir/build.make test/CMakeFiles/test002.dir/build
+.PHONY : test002/fast
 
 # Help Target
 help:
@@ -145,7 +145,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... myOpenGL"
-	@echo "... test001"
+	@echo "... test002"
 .PHONY : help
 
 

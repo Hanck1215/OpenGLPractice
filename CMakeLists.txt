@@ -11,6 +11,16 @@ find_package(OpenCV 3.0 REQUIRED) # 加載 OpenCV 函式庫
 find_package(Threads REQUIRED) # 加載 pthread 函式庫
 find_package(Eigen3 3.1.0 REQUIRED) # 加載 Eigen3 函式庫
 
+#引用 OpenGL 函式庫
+cmake_policy(SET CMP0072 NEW)
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glm REQUIRED)
+
+#引用 OpenGL 頭文件目錄
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glm_INCLUDE_DIRS})
+
 include_directories(${OpenCV_INCLUDE_DIRS}) # 加載 OpenCV 頭文件目錄
 include_directories(${EIGEN3_INCLUDE_DIR}) # 加載 Eigen3 頭文件目錄
 
@@ -18,6 +28,7 @@ set( # 編譯器連結第三方函式庫
     THIRD_PARTY_LIBS ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT}
     ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
     ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
+    ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ${glm_LIBRARIES}
 )
 
 # 生成的可執行文件檔將放置在 bin 資料夾

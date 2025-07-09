@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/pinecone/OpenGLPractice/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -77,6 +66,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,46 +111,46 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/test001.dir/rule:
-	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test001.dir/rule
-.PHONY : test/CMakeFiles/test001.dir/rule
+test/CMakeFiles/test002.dir/rule:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test002.dir/rule
+.PHONY : test/CMakeFiles/test002.dir/rule
 
 # Convenience name for target.
-test001: test/CMakeFiles/test001.dir/rule
+test002: test/CMakeFiles/test002.dir/rule
 
-.PHONY : test001
+.PHONY : test002
 
 # fast build rule for target.
-test001/fast:
-	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test001.dir/build.make test/CMakeFiles/test001.dir/build
-.PHONY : test001/fast
+test002/fast:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test002.dir/build.make test/CMakeFiles/test002.dir/build
+.PHONY : test002/fast
 
-test001.o: test001.cpp.o
+test002.o: test002.cpp.o
 
-.PHONY : test001.o
+.PHONY : test002.o
 
 # target to build an object file
-test001.cpp.o:
-	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test001.dir/build.make test/CMakeFiles/test001.dir/test001.cpp.o
-.PHONY : test001.cpp.o
+test002.cpp.o:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test002.dir/build.make test/CMakeFiles/test002.dir/test002.cpp.o
+.PHONY : test002.cpp.o
 
-test001.i: test001.cpp.i
+test002.i: test002.cpp.i
 
-.PHONY : test001.i
+.PHONY : test002.i
 
 # target to preprocess a source file
-test001.cpp.i:
-	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test001.dir/build.make test/CMakeFiles/test001.dir/test001.cpp.i
-.PHONY : test001.cpp.i
+test002.cpp.i:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test002.dir/build.make test/CMakeFiles/test002.dir/test002.cpp.i
+.PHONY : test002.cpp.i
 
-test001.s: test001.cpp.s
+test002.s: test002.cpp.s
 
-.PHONY : test001.s
+.PHONY : test002.s
 
 # target to generate assembly for a file
-test001.cpp.s:
-	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test001.dir/build.make test/CMakeFiles/test001.dir/test001.cpp.s
-.PHONY : test001.cpp.s
+test002.cpp.s:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f test/CMakeFiles/test002.dir/build.make test/CMakeFiles/test002.dir/test002.cpp.s
+.PHONY : test002.cpp.s
 
 # Help Target
 help:
@@ -158,12 +158,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... test001"
-	@echo "... test001.o"
-	@echo "... test001.i"
-	@echo "... test001.s"
+	@echo "... rebuild_cache"
+	@echo "... test002"
+	@echo "... test002.o"
+	@echo "... test002.i"
+	@echo "... test002.s"
 .PHONY : help
 
 

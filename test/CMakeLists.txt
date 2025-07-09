@@ -1,2 +1,2 @@
-add_executable(test001 test001.cpp)
-target_link_libraries(test001 myOpenGL)
+add_executable(test002 test002.cpp)
+target_link_libraries(test002 myOpenGL)
