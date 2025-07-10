@@ -52,8 +52,29 @@ void Displayer::mouse(int button, int state, int x, int y) {
     else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
         dragging = false; // 停止拖動
     }
+    // 滾輪向上放大、向下縮小
+    #define stride(x) pow(0.1f * x, 2.0f) // 根據深度計算移動步長
+    else if(button == 3 || button == 4) {
+        for(size_t i = 0; i < models.size(); ++i) {
+            if (models[i] != nullptr) {
+                glm::vec4 o = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+                glm::vec4 p = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+                glm::vec3 zAxis = glm::normalize(p-o); // 計算 Z 軸方向 (模型坐標系)
+
+                // 計算模型中心在視圖中的深度
+                glm::vec4 depth = models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+                // 根據滾輪方向決定移動方向
+                zAxis = (button == 3 ? stride(abs(depth.z)) * zAxis : -stride(abs(depth.z)) * zAxis);
+                models[i]->translate(zAxis); // 向前移動模型
+            } else {
+                std::cerr << "Model at index " << i << " is null!" << std::endl;
+            }
+        }
+    }
 }
 
+// 處理滑鼠拖動事件的函式
 void Displayer::mouseMotion(int x, int y) {
     // 如果正在拖動，計算新的視圖矩陣
     if (dragging) {
@@ -65,15 +86,14 @@ void Displayer::mouseMotion(int x, int y) {
                 glm::vec4 o = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
                 glm::vec4 p = glm::inverse(models[i]->mvMatrix) * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
                 glm::vec3 xAxis = glm::normalize(p-o); // 計算 X 軸方向 (模型坐標系)
-                
 
                 o = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
                 p = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
                 glm::vec3 yAxis = glm::normalize(p-o); // 計算 Y 軸方向 (模型坐標系)
 
                 // 繞 X 軸和 Y 軸旋轉模型 (模型坐標系)
-                models[i]->rotate(deg2rad(dy * 5.0), xAxis);
-                models[i]->rotate(deg2rad(dx * 5.0), yAxis);
+                models[i]->rotate(dy * 0.1f, xAxis);
+                models[i]->rotate(dx * 0.1f, yAxis);
             }
             else {
                 std::cerr << "Model at index " << i << " is null!" << std::endl;
