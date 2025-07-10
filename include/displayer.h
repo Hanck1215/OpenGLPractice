@@ -21,7 +21,9 @@ class Displayer {
         static void display();
         static void reshape(int width, int height);
         static void timer(int value);
-
+        static void mouse(int button, int state, int x, int y);
+        static void mouseMotion(int x, int y);
+        
         // 顯示資訊
         void dumpInfo() {
             printf("Vendor: %s\n", glGetString(GL_VENDOR));
@@ -32,6 +34,8 @@ class Displayer {
 
     public:
         static vector<model*> models; // 模型列表
+        static int btnDownX, btnDownY; // 滑鼠按下位置
+        static bool dragging; // 是否正在拖動
 };
 
 #endif
