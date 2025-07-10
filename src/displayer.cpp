@@ -28,7 +28,7 @@ Displayer::Displayer(int argc, char** argv) {
 
     // OpenGL 狀態設定
     glClearDepth(1.0f);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_BLEND);

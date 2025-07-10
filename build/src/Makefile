@@ -179,6 +179,33 @@ displayer.cpp.s:
 	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/displayer.cpp.s
 .PHONY : displayer.cpp.s
 
+niftiModel.o: niftiModel.cpp.o
+
+.PHONY : niftiModel.o
+
+# target to build an object file
+niftiModel.cpp.o:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o
+.PHONY : niftiModel.cpp.o
+
+niftiModel.i: niftiModel.cpp.i
+
+.PHONY : niftiModel.i
+
+# target to preprocess a source file
+niftiModel.cpp.i:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.i
+.PHONY : niftiModel.cpp.i
+
+niftiModel.s: niftiModel.cpp.s
+
+.PHONY : niftiModel.s
+
+# target to generate assembly for a file
+niftiModel.cpp.s:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.s
+.PHONY : niftiModel.cpp.s
+
 niftiReader.o: niftiReader.cpp.o
 
 .PHONY : niftiReader.o
@@ -248,6 +275,9 @@ help:
 	@echo "... displayer.o"
 	@echo "... displayer.i"
 	@echo "... displayer.s"
+	@echo "... niftiModel.o"
+	@echo "... niftiModel.i"
+	@echo "... niftiModel.s"
 	@echo "... niftiReader.o"
 	@echo "... niftiReader.i"
 	@echo "... niftiReader.s"

@@ -12,6 +12,12 @@ src/CMakeFiles/myOpenGL.dir/displayer.cpp.o
  ../include/model.h
  ../include/shaderReader.h
  /home/pinecone/OpenGLPractice/src/displayer.cpp
+src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o
+ ../include/model.h
+ ../include/niftiModel.h
+ ../include/niftiReader.h
+ ../include/shaderReader.h
+ /home/pinecone/OpenGLPractice/src/niftiModel.cpp
 src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o
  ../include/niftiReader.h
  /home/pinecone/OpenGLPractice/src/niftiReader.cpp

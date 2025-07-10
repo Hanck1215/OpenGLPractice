@@ -20,6 +20,11 @@
   "file": "/home/pinecone/OpenGLPractice/src/displayer.cpp"
 },
 {
+  "directory": "/home/pinecone/OpenGLPractice/build/src",
+  "command": "/usr/bin/g++  -DmyOpenGL_EXPORTS -I/usr/include/eigen3 -I/home/pinecone/OpenGLPractice/include -I/home/pinecone/OpenGLPractice -isystem /usr/local/include/opencv  -std=c++17 -O3 -O3 -DNDEBUG -fPIC   -o CMakeFiles/myOpenGL.dir/niftiModel.cpp.o -c /home/pinecone/OpenGLPractice/src/niftiModel.cpp",
+  "file": "/home/pinecone/OpenGLPractice/src/niftiModel.cpp"
+},
+{
   "directory": "/home/pinecone/OpenGLPractice/build/test",
   "command": "/usr/bin/g++   -I/usr/include/eigen3 -I/home/pinecone/OpenGLPractice/include -I/home/pinecone/OpenGLPractice -isystem /usr/local/include/opencv  -std=c++17 -O3 -O3 -DNDEBUG   -o CMakeFiles/test002.dir/test002.cpp.o -c /home/pinecone/OpenGLPractice/test/test002.cpp",
   "file": "/home/pinecone/OpenGLPractice/test/test002.cpp"

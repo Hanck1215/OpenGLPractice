@@ -36,6 +36,30 @@ glm/gtx/rotate_vector.hpp
 glm/gtx/string_cast.hpp
 -
 
+../include/niftiModel.h
+string
+-
+limits
+-
+model.h
+../include/model.h
+shaderReader.h
+../include/shaderReader.h
+niftiReader.h
+../include/niftiReader.h
+
+../include/niftiReader.h
+vector
+-
+string
+-
+ios
+-
+fstream
+-
+cstring
+-
+
 ../include/shaderReader.h
 vector
 -
@@ -55,4 +79,6 @@ GL/glew.h
 /home/pinecone/OpenGLPractice/test/test002.cpp
 displayer.h
 /home/pinecone/OpenGLPractice/test/displayer.h
+niftiModel.h
+/home/pinecone/OpenGLPractice/test/niftiModel.h
 

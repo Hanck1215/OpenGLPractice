@@ -12,6 +12,12 @@ src/CMakeFiles/myOpenGL.dir/displayer.cpp.o: ../include/model.h
 src/CMakeFiles/myOpenGL.dir/displayer.cpp.o: ../include/shaderReader.h
 src/CMakeFiles/myOpenGL.dir/displayer.cpp.o: ../src/displayer.cpp
 
+src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o: ../include/model.h
+src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o: ../include/niftiModel.h
+src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o: ../include/niftiReader.h
+src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o: ../include/shaderReader.h
+src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o: ../src/niftiModel.cpp
+
 src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o: ../include/niftiReader.h
 src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o: ../src/niftiReader.cpp
 
