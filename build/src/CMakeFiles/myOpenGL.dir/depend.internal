@@ -3,11 +3,13 @@
 
 src/CMakeFiles/myOpenGL.dir/cubeModel.cpp.o
  ../include/cubeModel.h
+ ../include/model.h
  ../include/shaderReader.h
  /home/pinecone/OpenGLPractice/src/cubeModel.cpp
 src/CMakeFiles/myOpenGL.dir/displayer.cpp.o
  ../include/cubeModel.h
  ../include/displayer.h
+ ../include/model.h
  ../include/shaderReader.h
  /home/pinecone/OpenGLPractice/src/displayer.cpp
 src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o

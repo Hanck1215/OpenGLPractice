@@ -7,28 +7,20 @@
 #IncludeRegexTransform: 
 
 ../include/cubeModel.h
-GL/glew.h
--
-glm/glm.hpp
--
 shaderReader.h
 ../include/shaderReader.h
+model.h
+../include/model.h
 
-../include/displayer.h
+../include/model.h
 GL/glew.h
--
-GL/freeglut.h
 -
 glm/glm.hpp
 -
 glm/gtx/rotate_vector.hpp
 -
-cstdio
+glm/gtx/string_cast.hpp
 -
-iostream
--
-cubeModel.h
-../include/cubeModel.h
 
 ../include/shaderReader.h
 vector
@@ -46,7 +38,7 @@ iostream
 GL/glew.h
 -
 
-/home/pinecone/OpenGLPractice/src/displayer.cpp
-displayer.h
-/home/pinecone/OpenGLPractice/src/displayer.h
+/home/pinecone/OpenGLPractice/src/cubeModel.cpp
+cubeModel.h
+/home/pinecone/OpenGLPractice/src/cubeModel.h
 

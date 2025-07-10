@@ -1,29 +1,22 @@
 #ifndef CUBEMODEL_H
 #define CUBEMODEL_H
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
 #include "shaderReader.h"
+#include "model.h"
 
-class cubeModel {
+class cubeModel : public model {
     public:
         // Constructor and destructor
         cubeModel();
         ~cubeModel() {};
 
         // 繪製函式
-        void draw();
+        void draw() override;
+        void translate(glm::vec3 axis) override;
+        void rotate(float angle, glm::vec3 axis) override;
 
         // shader file 讀取器
         shaderReader shaderReaderInstance;
-
-        // 模型視圖和投影矩陣的位置
-        GLint mvLocation;
-        GLint projLocation;
-        
-        // 模型視圖和投影矩陣的矩陣
-        glm::mat4 mvMatrix;
-        glm::mat4 projMatrix;
 
         // 緩衝區和著色器程序的ID
         GLuint vao;

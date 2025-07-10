@@ -3,29 +3,35 @@
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <glm/glm.hpp>
-#include <glm/gtx/rotate_vector.hpp>
 #include <cstdio>
 #include <iostream>
+#include "model.h"
 #include "cubeModel.h"
 
-#define deg2rad(x) ((x)*((3.1415926f)/(180.0f)))
-#define rad2deg(x) ((180.0f) / ((x)*(3.1415926f)))
+class Displayer {
+    public:
+        // 建構函式和解構函式
+        Displayer(int argc, char** argv);
+        ~Displayer() {}
 
-cubeModel* cube = nullptr; // 立方體模型的指標
-cubeModel* cube2 = nullptr; // 立方體模型的指標
+        // 啟動顯示循環
+        void startDisplayLoop() { glutMainLoop(); }
 
-void display();
-void reshape(int width, int height);
-void timer(int value);
+        // callback 函式
+        static void display();
+        static void reshape(int width, int height);
+        static void timer(int value);
 
-void initializeGL(int argc, char** argv);
+        // 顯示資訊
+        void dumpInfo() {
+            printf("Vendor: %s\n", glGetString(GL_VENDOR));
+            printf("Renderer: %s\n", glGetString(GL_RENDERER));
+            printf("Version: %s\n", glGetString(GL_VERSION));
+            printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+        };
 
-void dumpInfo() {
-    printf("Vendor: %s\n", glGetString(GL_VENDOR));
-    printf("Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("Version: %s\n", glGetString(GL_VERSION));
-    printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    public:
+        static vector<model*> models; // 模型列表
 };
 
 #endif

@@ -106,6 +106,16 @@ cubeModel::cubeModel() {
     glBufferData(GL_ARRAY_BUFFER, 36 * 3 * sizeof(GLfloat), vertexPositions, GL_STATIC_DRAW);
 }
 
+// 平移模型視圖矩陣
+void cubeModel::translate(glm::vec3 axis) { 
+    mvMatrix = glm::translate(mvMatrix, axis); 
+}
+
+// 旋轉模型視圖矩陣
+void cubeModel::rotate(float angle, glm::vec3 axis) {
+    mvMatrix = glm::rotate(mvMatrix, glm::radians(angle), axis);
+}
+
 void cubeModel::draw() {
     // 使用著色器程序
     glUseProgram(program);

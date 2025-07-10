@@ -7,28 +7,34 @@
 #IncludeRegexTransform: 
 
 ../include/cubeModel.h
-GL/glew.h
--
-glm/glm.hpp
--
 shaderReader.h
 ../include/shaderReader.h
+model.h
+../include/model.h
 
 ../include/displayer.h
 GL/glew.h
 -
 GL/freeglut.h
 -
-glm/glm.hpp
--
-glm/gtx/rotate_vector.hpp
--
 cstdio
 -
 iostream
 -
+model.h
+../include/model.h
 cubeModel.h
 ../include/cubeModel.h
+
+../include/model.h
+GL/glew.h
+-
+glm/glm.hpp
+-
+glm/gtx/rotate_vector.hpp
+-
+glm/gtx/string_cast.hpp
+-
 
 ../include/shaderReader.h
 vector

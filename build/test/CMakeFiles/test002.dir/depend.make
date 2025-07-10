@@ -3,6 +3,7 @@
 
 test/CMakeFiles/test002.dir/test002.cpp.o: ../include/cubeModel.h
 test/CMakeFiles/test002.dir/test002.cpp.o: ../include/displayer.h
+test/CMakeFiles/test002.dir/test002.cpp.o: ../include/model.h
 test/CMakeFiles/test002.dir/test002.cpp.o: ../include/shaderReader.h
 test/CMakeFiles/test002.dir/test002.cpp.o: ../test/test002.cpp
 
