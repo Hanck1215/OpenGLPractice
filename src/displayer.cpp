@@ -50,9 +50,6 @@ Displayer::Displayer(int argc, char** argv) {
     models.reserve(20); // 預留空間以提高性能
 }
 
-// 滾輪向上放大、向下縮小
-#define stride(x) pow(0.1f * x, 2.0f) // 根據深度計算移動步長
-
 // 處理滑鼠事件的函式
 void Displayer::mouse(int button, int state, int x, int y) {
     // 記錄按下時的鼠標座標
@@ -64,6 +61,8 @@ void Displayer::mouse(int button, int state, int x, int y) {
     else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
         dragging = false; // 停止拖動
     }
+    // 滾輪向上放大、向下縮小
+    #define stride(x) min(pow(0.1f * x, 2.0f), 0.5f) // 根據深度計算移動步長
     else if(button == 3 || button == 4) {
         for(size_t i = 0; i < models.size(); ++i) {
             if (models[i] != nullptr) {
@@ -75,6 +74,7 @@ void Displayer::mouse(int button, int state, int x, int y) {
                 glm::vec4 depth = models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
                 // 根據滾輪方向決定移動方向
+                // 如果深度小於 20.0f，則移動模型
                 zAxis = (button == 3 ? stride(abs(depth.z)) * zAxis : -stride(abs(depth.z)) * zAxis);
                 models[i]->translate(zAxis); // 向前移動模型
             } else {
