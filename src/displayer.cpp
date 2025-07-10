@@ -4,6 +4,8 @@ vector<model*> Displayer::models; // 靜態成員變量，用於存儲模型列�
 int Displayer::btnDownX = 0; // 初始化滑鼠按下位置 X 座標
 int Displayer::btnDownY = 0; // 初始化滑鼠按下位置 Y 座標
 bool Displayer::dragging = false; // 初始化拖動狀態
+bool Displayer::rotationMode = true; // 初始化為旋轉模式
+bool Displayer::transitionMode = false; // 初始化為非平移模式
 
 Displayer::Displayer(int argc, char** argv) {
     // 初始化 GLUT
@@ -32,6 +34,13 @@ Displayer::Displayer(int argc, char** argv) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // 設定菜單
+    int mainMenu = glutCreateMenu(menu);
+	glutSetMenu(mainMenu);
+	glutAddMenuEntry("ROTATION_MODE", ROTATION_MODE);
+	glutAddMenuEntry("TRANSITION_MODE", TRANSITION_MODE);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
     glutDisplayFunc(display); // 設定顯示函式
     glutReshapeFunc(reshape); // 設定視窗變動時的回調函式
     glutMouseFunc(mouse); // 設定滑鼠事件的回調函式
@@ -40,6 +49,9 @@ Displayer::Displayer(int argc, char** argv) {
 
     models.reserve(20); // 預留空間以提高性能
 }
+
+// 滾輪向上放大、向下縮小
+#define stride(x) pow(0.1f * x, 2.0f) // 根據深度計算移動步長
 
 // 處理滑鼠事件的函式
 void Displayer::mouse(int button, int state, int x, int y) {
@@ -52,8 +64,6 @@ void Displayer::mouse(int button, int state, int x, int y) {
     else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
         dragging = false; // 停止拖動
     }
-    // 滾輪向上放大、向下縮小
-    #define stride(x) pow(0.1f * x, 2.0f) // 根據深度計算移動步長
     else if(button == 3 || button == 4) {
         for(size_t i = 0; i < models.size(); ++i) {
             if (models[i] != nullptr) {
@@ -91,9 +101,19 @@ void Displayer::mouseMotion(int x, int y) {
                 p = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
                 glm::vec3 yAxis = glm::normalize(p-o); // 計算 Y 軸方向 (模型坐標系)
 
-                // 繞 X 軸和 Y 軸旋轉模型 (模型坐標系)
-                models[i]->rotate(dy * 0.1f, xAxis);
-                models[i]->rotate(dx * 0.1f, yAxis);
+                // 計算模型中心在視圖中的深度
+                glm::vec4 depth = models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+                // 繞 X 軸和 Y 軸旋轉或平移模型 (模型坐標系)
+                if(rotationMode) {
+                    models[i]->rotate(dy * 0.1f, xAxis);
+                    models[i]->rotate(dx * 0.1f, yAxis);
+                } else if(transitionMode) {
+                    models[i]->translate(0.05f * stride(abs(depth.z)) * dx * xAxis); // 平移模型
+                    models[i]->translate(-0.05f * stride(abs(depth.z)) * dy * yAxis); // 平移模型
+                } else {
+                    std::cerr << "Unknown mode!" << std::endl;
+                }
             }
             else {
                 std::cerr << "Model at index " << i << " is null!" << std::endl;
@@ -102,6 +122,19 @@ void Displayer::mouseMotion(int x, int y) {
 
         btnDownX = x; // 更新按下位置
         btnDownY = y;
+    }
+}
+
+// 處理菜單選項的函式
+void Displayer::menu(int id) {
+    if (id == ROTATION_MODE) {
+        rotationMode = true; // 切換到旋轉模式
+        transitionMode = false; // 確保平移模式被禁用
+    } else if (id == TRANSITION_MODE) {
+        rotationMode = false; // 切換到平移模式
+        transitionMode = true; // 確保旋轉模式被禁用
+    } else {
+        std::cerr << "Unknown menu option selected: " << id << std::endl;
     }
 }
 
@@ -142,4 +175,3 @@ void Displayer::timer(int value) {
     glutPostRedisplay(); // 重新繪製畫面
     glutTimerFunc(value, timer, value); // 設定下一次的計時器
 };
-

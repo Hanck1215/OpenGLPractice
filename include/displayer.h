@@ -8,6 +8,9 @@
 #include "model.h"
 #include "cubeModel.h"
 
+#define ROTATION_MODE	1
+#define TRANSITION_MODE	2
+
 class Displayer {
     public:
         // 建構函式和解構函式
@@ -23,7 +26,8 @@ class Displayer {
         static void timer(int value);
         static void mouse(int button, int state, int x, int y);
         static void mouseMotion(int x, int y);
-        
+        static void menu(int id);
+
         // 顯示資訊
         void dumpInfo() {
             printf("Vendor: %s\n", glGetString(GL_VENDOR));
@@ -36,6 +40,8 @@ class Displayer {
         static vector<model*> models; // 模型列表
         static int btnDownX, btnDownY; // 滑鼠按下位置
         static bool dragging; // 是否正在拖動
+        static bool rotationMode; // 是否為旋轉模式
+        static bool transitionMode; // 是否為平移模式
 };
 
 #endif
