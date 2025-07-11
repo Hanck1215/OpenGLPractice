@@ -14,6 +14,14 @@ class sliceModel : public model {
         void translate(glm::vec3 axis) override;
         void rotate(float angle, glm::vec3 axis) override;
 
+        // 校正姿態，使得面朝向面向中心
+        void correction();
+
+        // 設定面向中心姿態
+        void setMatrixCentral(glm::mat4 &mvMatrixCentral) {
+            this->mvMatrixCentral = &mvMatrixCentral;
+        };
+
         // shader file 讀取器
         shaderReader shaderReaderInstance;
 
@@ -28,6 +36,9 @@ class sliceModel : public model {
 
         // 該模型的所有頂點位置
         GLfloat* vertexPositions;
+
+        // 以該姿態為面向中心
+        glm::mat4* mvMatrixCentral = nullptr;
 };
 
 #endif

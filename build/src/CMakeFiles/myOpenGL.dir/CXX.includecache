@@ -6,26 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../include/cubeModel.h
-shaderReader.h
-../include/shaderReader.h
-model.h
-../include/model.h
-
-../include/displayer.h
-GL/glew.h
--
-GL/freeglut.h
--
-cstdio
--
-iostream
--
-model.h
-../include/model.h
-cubeModel.h
-../include/cubeModel.h
-
 ../include/model.h
 GL/glew.h
 -
@@ -52,11 +32,15 @@ iostream
 GL/glew.h
 -
 
-/home/pinecone/OpenGLPractice/src/cubeModel.cpp
-cubeModel.h
-/home/pinecone/OpenGLPractice/src/cubeModel.h
+../include/sliceModel.h
+shaderReader.h
+../include/shaderReader.h
+model.h
+../include/model.h
 
-/home/pinecone/OpenGLPractice/src/displayer.cpp
-displayer.h
-/home/pinecone/OpenGLPractice/src/displayer.h
+/home/pinecone/OpenGLPractice/src/sliceModel.cpp
+chrono
+-
+sliceModel.h
+/home/pinecone/OpenGLPractice/src/sliceModel.h
 

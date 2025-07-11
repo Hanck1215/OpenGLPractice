@@ -55,7 +55,7 @@ Displayer::Displayer(int argc, char** argv) {
 }
 
 // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
-void getXYZAxisWorld(size_t index, glm::vec3 &xAxis, glm::vec3 &yAxis, glm::vec3 &zAxis) {
+void getXYZAxisWorld2Model(size_t index, glm::vec3 &xAxis, glm::vec3 &yAxis, glm::vec3 &zAxis) {
     // 將世界座標系下的 x 軸向量轉換到該模型的座標系下
     glm::vec4 o = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
     glm::vec4 p = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -77,7 +77,7 @@ void getXYZAxisWorld(size_t index, glm::vec3 &xAxis, glm::vec3 &yAxis, glm::vec3
 void zoomModel(int button, size_t index, glm::vec4 &oWorld) {
     // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
     glm::vec3 xAxis, yAxis, zAxis;
-    getXYZAxisWorld(index, xAxis, yAxis, zAxis);
+    getXYZAxisWorld2Model(index, xAxis, yAxis, zAxis);
 
     // 根據滾輪方向決定靠近或遠離，同時根據指定模型之姿態矩陣計算距離鏡頭之深度決定移動速度
     // 越近則移動越慢；越遠則移動越快
@@ -90,7 +90,14 @@ void zoomAllModel(int button) {
     // 先計算當前模型(索引為modelIndex)中心點在世界坐標系下的座標
     glm::vec4 oWorld = Displayer::models[Displayer::modelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
     for(size_t i = 0; i < Displayer::models.size(); ++i) { // 遍歷模型列表
-        zoomModel(button, i, oWorld); // 縮放指定模型
+        // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+        glm::vec3 xAxis, yAxis, zAxis;
+        getXYZAxisWorld2Model(i, xAxis, yAxis, zAxis);
+
+        // 根據滾輪方向決定靠近或遠離，同時根據指定模型之姿態矩陣計算距離鏡頭之深度決定移動速度
+        // 越近則移動越慢；越遠則移動越快
+        zAxis = (button == 3 ? stride(abs(oWorld.z)) * zAxis : -stride(abs(oWorld.z)) * zAxis);
+        Displayer::models[i]->mvMatrix = glm::translate(Displayer::models[i]->mvMatrix, zAxis); 
     }
 }
 
@@ -128,7 +135,7 @@ void Displayer::mouse(int button, int state, int x, int y) {
 void rotateModelWorld(int index, int dx, int dy) {
     // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
     glm::vec3 xAxis, yAxis, zAxis;
-    getXYZAxisWorld(index, xAxis, yAxis, zAxis);
+    getXYZAxisWorld2Model(index, xAxis, yAxis, zAxis);
 
     // 先計算模型(索引為index)中心點在世界坐標系下的座標
     glm::vec4 oWorld = Displayer::models[index]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -142,7 +149,7 @@ void rotateModelWorld(int index, int dx, int dy) {
 void translateModelWorld(int index, int dx, int dy) {
     // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
     glm::vec3 xAxis, yAxis, zAxis;
-    getXYZAxisWorld(index, xAxis, yAxis, zAxis);
+    getXYZAxisWorld2Model(index, xAxis, yAxis, zAxis);
 
     // 先計算模型(索引為index)中心點在世界坐標系下的座標
     glm::vec4 oWorld = Displayer::models[index]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -165,15 +172,15 @@ void rotateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
         if(i == centralModelIndex) { continue; } // 跳過中央模型
         // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
         glm::vec3 xAxis, yAxis, zAxis;
-        getXYZAxisWorld(i, xAxis, yAxis, zAxis);
+        getXYZAxisWorld2Model(i, xAxis, yAxis, zAxis);
 
         // 計算該模型原點在世界座標中的位置，以及主要模型(索引為modelIndex)坐標系的位置
         glm::vec4 oWorld = Displayer::models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         glm::vec4 oMain = glm::inverse(mvMatrixOld) * oWorld;
         
         // 旋轉模型
-        Displayer::models[i]->rotate(dy * 0.1f, xAxis);
-        Displayer::models[i]->rotate(dx * 0.1f, yAxis);
+        Displayer::models[i]->mvMatrix = glm::rotate(Displayer::models[i]->mvMatrix, glm::radians(dy * 0.1f), xAxis); 
+        Displayer::models[i]->mvMatrix = glm::rotate(Displayer::models[i]->mvMatrix, glm::radians(dx * 0.1f), yAxis);
 
         // 計算該物件原點需要在世界座標中的位置
         glm::vec4 oWorldNew = Displayer::models[centralModelIndex]->mvMatrix * oMain;
@@ -182,7 +189,7 @@ void rotateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
         glm::vec4 newVector = glm::inverse(Displayer::models[i]->mvMatrix) * oWorldNew;
 
         // 移動到新的位置
-        Displayer::models[i]->translate(glm::vec3(newVector));
+        Displayer::models[i]->mvMatrix = glm::translate(Displayer::models[i]->mvMatrix, glm::vec3(newVector)); 
     }
 }
 
@@ -192,14 +199,14 @@ void translateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
     for(size_t i = 0; i < Displayer::models.size(); ++i) {
         // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
         glm::vec3 xAxis, yAxis, zAxis;
-        getXYZAxisWorld(i, xAxis, yAxis, zAxis);
+        getXYZAxisWorld2Model(i, xAxis, yAxis, zAxis);
         
         // 先計算模型中心點在世界坐標系下的座標
         glm::vec4 oWorld = Displayer::models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
         // 平移模型
-        Displayer::models[i]->translate(0.05f * stride(abs(oWorld.z)) * dx * xAxis);
-        Displayer::models[i]->translate(-0.05f * stride(abs(oWorld.z)) * dy * yAxis);
+        Displayer::models[i]->mvMatrix = glm::translate(Displayer::models[i]->mvMatrix, 0.05f * stride(abs(oWorld.z)) * dx * xAxis); 
+        Displayer::models[i]->mvMatrix = glm::translate(Displayer::models[i]->mvMatrix, -0.05f * stride(abs(oWorld.z)) * dy * yAxis);
     }
 }
 

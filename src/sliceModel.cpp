@@ -1,3 +1,4 @@
+#include <chrono> // 提供高精度時間測量功能
 #include "sliceModel.h"
 
 sliceModel::sliceModel() {
@@ -68,12 +69,40 @@ sliceModel::sliceModel() {
 
 // 平移模型視圖矩陣
 void sliceModel::translate(glm::vec3 axis) { 
-    mvMatrix = glm::translate(mvMatrix, axis); 
+    glm::vec3 newAxis;
+    if(axis.z > 0) {
+        newAxis = glm::vec3(0.0f, 0.0f, glm::length(axis));
+    }else {
+        newAxis = glm::vec3(0.0f, 0.0f, -glm::length(axis));
+    }
+    mvMatrix = glm::translate(mvMatrix, 0.1f * newAxis);
 }
 
 // 旋轉模型視圖矩陣
 void sliceModel::rotate(float angle, glm::vec3 axis) {
     mvMatrix = glm::rotate(mvMatrix, glm::radians(angle), axis);
+    correction(); // 校正姿態，使得面朝向面向中心
+}
+
+// 校正姿態，使得面朝向面向中心
+void sliceModel::correction() {
+    // 如果沒有設置，就不做任何事情
+    if(mvMatrixCentral == nullptr) { return; }
+
+    // 計算面向中心在世界坐標系下的位置
+    glm::vec4 centralWorld = (*mvMatrixCentral) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    // 計算面向中心在本裁切平面坐標系下的位置
+    glm::vec4 centralSlice = glm::inverse(mvMatrix) * centralWorld;
+
+    // 計算面向中心的向量投影到本裁切平面朝向向量的向量
+    glm::vec3 projCentral = glm::dot(glm::vec3(centralSlice), glm::vec3(0,0,-1)) * glm::vec3(0,0,-1);
+
+    // 計算平移方向，使得本裁切平面朝向面向中心 (指向被減數)
+    glm::vec3 correctionVector = glm::vec3(centralSlice) - projCentral;
+
+    // 校正姿態
+    mvMatrix = glm::translate(mvMatrix, correctionVector);
 }
 
 void sliceModel::draw() {
@@ -88,5 +117,5 @@ void sliceModel::draw() {
 
     // 綁定 VAO 並繪製立方體
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
