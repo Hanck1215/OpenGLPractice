@@ -10,7 +10,7 @@
 
 #define ROTATION_MODE	1
 #define TRANSITION_MODE	2
-#define FREEZE_MODE		3
+#define SLICE_MODE		3
 
 class Displayer {
     public:
@@ -51,7 +51,7 @@ class Displayer {
         static bool dragging; // 是否正在拖動
         static bool rotationMode; // 是否為旋轉模式
         static bool transitionMode; // 是否為平移模式
-        static bool freezeMode; // 是否為鎖定模式
+        static bool sliceMode; // 是否為切片模式
         static size_t modelIndex; // 當前模型索引
 };
 

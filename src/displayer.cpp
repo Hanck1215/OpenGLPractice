@@ -6,7 +6,7 @@ int Displayer::btnDownY = 0; // 初始化滑鼠按下位置 Y 座標
 bool Displayer::dragging = false; // 初始化拖動狀態
 bool Displayer::rotationMode = true; // 初始化為旋轉模式
 bool Displayer::transitionMode = false; // 初始化為非平移模式
-bool Displayer::freezeMode = false; // 初始化為非鎖定模式
+bool Displayer::sliceMode = false; // 初始化為非切片模式
 size_t Displayer::modelIndex = -1; // 初始化模型索引
 
 Displayer::Displayer(int argc, char** argv) {
@@ -39,9 +39,9 @@ Displayer::Displayer(int argc, char** argv) {
     // 設定選單
     int mainMenu = glutCreateMenu(menu);
 	glutSetMenu(mainMenu);
-	glutAddMenuEntry("ROTATION_MODE", ROTATION_MODE); // 滑鼠旋轉模式
-	glutAddMenuEntry("TRANSITION_MODE", TRANSITION_MODE); // 滑鼠平移模式
-    glutAddMenuEntry("FREEZE_MODE", FREEZE_MODE); // 以當前選擇之模型為中心，同時操作所有物件
+	glutAddMenuEntry("ROTATION ON/OFF", ROTATION_MODE); // 滑鼠旋轉模式
+	glutAddMenuEntry("TRANSITION ON/OFF", TRANSITION_MODE); // 滑鼠平移模式
+    glutAddMenuEntry("SLICE ON/OFF", SLICE_MODE); // 以裁切平面為中心，同時操作所有物件
 	glutAttachMenu(GLUT_RIGHT_BUTTON); // 右鍵點擊時顯示選單
 
     glutDisplayFunc(display); // 設定顯示函式
@@ -103,7 +103,7 @@ void zoomAllModel(int button) {
 // 滑鼠滾動時的處理函數
 void mouseScroll(int button) {
     if(!Displayer::models.empty()) { // 如果模型列表中有模型
-        if(Displayer::freezeMode) { // 如果是鎖定模式
+        if(!Displayer::sliceMode) { // 如果是非切片模式
             zoomAllModel(button); // 縮放所有模型
         }else {
             // 計算當前模型中心在視圖中的深度
@@ -158,7 +158,7 @@ void translateModelWorld(int index, int dx, int dy) {
     Displayer::models[index]->translate(-0.05f * stride(abs(oWorld.z)) * dy * yAxis);
 }
 
-// 鎖定模式下的旋轉方法
+// 非切片模式下的旋轉方法
 // 以指定模型為中心點，旋轉所有物件
 void rotateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
     // 保存舊的中央模型姿態
@@ -192,7 +192,7 @@ void rotateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
     }
 }
 
-// 鎖定模式下的平移方法
+// 非切片模式下的平移方法
 void translateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
     // 平移所有物件
     // 先計算模型中心點在世界坐標系下的座標
@@ -208,18 +208,18 @@ void translateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
     }
 }
 
-// 根據是否為鎖定模式選擇旋轉方法
-void fRotateModelWorld(bool freezed, size_t index, int dx, int dy) {
-    if(!freezed) {
+// 根據是否為非切片模式選擇旋轉方法
+void fRotateModelWorld(bool slice, size_t index, int dx, int dy) {
+    if(slice) {
         rotateModelWorld(index, dx, dy);
     }else {
         rotateModelWorldFreeze(index, dx, dy);
     }
 }
 
-// 根據是否為鎖定模式選擇平移方法
-void fTranslateModelWorld(bool freezed, size_t index, int dx, int dy) {
-    if(!freezed) {
+// 根據是否為非切片模式選擇平移方法
+void fTranslateModelWorld(bool slice, size_t index, int dx, int dy) {
+    if(slice) {
         translateModelWorld(index, dx, dy);
     }else {
         translateModelWorldFreeze(index, dx, dy);
@@ -235,9 +235,9 @@ void Displayer::mouseMotion(int x, int y) {
         
         // 繞世界坐標系下的 x、y 軸，旋轉或平移模型
         if(rotationMode) {
-            fRotateModelWorld(freezeMode, modelIndex, dx, dy);
+            fRotateModelWorld(sliceMode, modelIndex, dx, dy);
         } else if(transitionMode) {
-            fTranslateModelWorld(freezeMode, modelIndex, dx, dy);
+            fTranslateModelWorld(sliceMode, modelIndex, dx, dy);
         }
 
         // 更新按下位置
@@ -256,8 +256,13 @@ void Displayer::menu(int id) {
         rotationMode = false; // 切換到平移模式
         transitionMode = true; // 確保旋轉模式被禁用
     } 
-    else if (id == FREEZE_MODE) {
-        freezeMode = !freezeMode; // 切換鎖定模式
+    else if (id == SLICE_MODE) {
+        sliceMode = !sliceMode; // 切換切片模式
+        // 更新第一個模型的 selected 狀態
+        for(size_t i = 0; i < models.size(); ++i) {
+            models[i]->selected = sliceMode;
+            break;
+        }
     }
 }
 

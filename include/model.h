@@ -27,6 +27,10 @@ class model {
         // 模型視圖和投影矩陣的矩陣
         glm::mat4 mvMatrix;
         glm::mat4 projMatrix;
+
+        // 是否被選取及變數位置
+        bool selected = false;
+        GLint selectedLocation;
 };
 
 #endif

@@ -49,6 +49,9 @@ sliceModel::sliceModel() {
     mvLocation = glGetUniformLocation(program, "mvMatrix");
     projLocation = glGetUniformLocation(program, "projMatrix");
 
+    // 獲取是否被選取變數的位置
+    selectedLocation = glGetUniformLocation(program, "selected");
+
     // 初始化模型視圖和投影矩陣
     mvMatrix = glm::mat4(1.0f);
     projMatrix = glm::mat4(1.0f);
@@ -112,6 +115,8 @@ void sliceModel::draw() {
     glDepthMask(GL_FALSE); // 禁用深度寫入，確保切片不會被其他物體遮擋
 
     // 更新模型視圖和投影矩陣
+    // 更新狀態到 GPU 上
+    glUniform1i(selectedLocation, selected ? 1 : 0);
     glUniformMatrix4fv(mvLocation, 1, GL_FALSE, &mvMatrix[0][0]);
     glUniformMatrix4fv(projLocation, 1, GL_FALSE, &projMatrix[0][0]);
 
