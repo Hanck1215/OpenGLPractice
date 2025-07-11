@@ -120,9 +120,21 @@ void cubeModel::draw() {
     // 使用著色器程序
     glUseProgram(program);
 
-    glDepthMask(GL_TRUE); // 禁用深度寫入，確保切片不會被其他物體遮擋
+    /*
+    啟用深度寫入 : 
+    如果設為 GL_FALSE，
+    繪圖時就不會更新深度值，通常用於透明物件或特殊效果。
+    設為 GL_TRUE 是一般 3D 物件繪製的預設，確保物件深度能正確判斷遮擋關係。*/ 
+    glDepthMask(GL_TRUE); 
 
-    // 更新模型視圖和投影矩陣
+    /*
+    啟用深度測試 : 
+    深度測試會比較每個像素的深度值，
+    只有比目前緩衝區更「近」的像素才會被繪製，
+    這樣才能正確顯示前後遮擋的 3D 效果。*/ 
+    glEnable(GL_DEPTH_TEST);
+
+    // 更新姿態矩陣和投影矩陣
     glUniformMatrix4fv(mvLocation, 1, GL_FALSE, &mvMatrix[0][0]);
     glUniformMatrix4fv(projLocation, 1, GL_FALSE, &projMatrix[0][0]);
 

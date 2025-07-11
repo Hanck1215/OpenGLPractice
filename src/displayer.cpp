@@ -29,21 +29,21 @@ Displayer::Displayer(int argc, char** argv) {
     dumpInfo(); // 輸出 OpenGL 的相關資訊
 
     // OpenGL 狀態設定
-    glClearDepth(1.0f);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearDepth(1.0f); // 確保每次繪圖前，深度緩衝區都被初始化為「最遠的距離」（1.0）。避免前一幀的深度資料會影響新一幀的繪製結果
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // 設定清除顏色緩衝區時的顏色為白色（RGBA: 1,1,1,1）。每次 glClear(GL_COLOR_BUFFER_BIT) 時，畫面背景會變成白色。
+    glEnable(GL_DEPTH_TEST); // 啟用深度測試。繪製像素時會根據深度值判斷遮擋關係，確保近的物件會蓋住遠的物件。
+    glDepthFunc(GL_LEQUAL); // 設定深度測試的比較函式為「小於或等於」。這意味著當新像素的深度值小於或等於緩衝區中的深度值時，該像素會被繪製。
+    glEnable(GL_BLEND); // 啟用混合功能。這允許我們在繪製透明物件時，能夠正確地混合顏色。
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // 設定混合方式。這是標準的 alpha blending，讓物件可以有透明度效果：螢幕顏色 = 物件顏色 * alpha + 背景顏色 * (1 - alpha)
 
-    // 設定菜單
+    // 設定選單
     int mainMenu = glutCreateMenu(menu);
 	glutSetMenu(mainMenu);
-	glutAddMenuEntry("ROTATION_MODE", ROTATION_MODE);
-	glutAddMenuEntry("TRANSITION_MODE", TRANSITION_MODE);
-    glutAddMenuEntry("FREEZE_MODE", FREEZE_MODE);
-    glutAddMenuEntry("NEXT", NEXT);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutAddMenuEntry("ROTATION_MODE", ROTATION_MODE); // 滑鼠旋轉模式
+	glutAddMenuEntry("TRANSITION_MODE", TRANSITION_MODE); // 滑鼠平移模式
+    glutAddMenuEntry("FREEZE_MODE", FREEZE_MODE); // 以當前選擇之模型為中心，同時操作所有物件
+    glutAddMenuEntry("NEXT", NEXT); // 切換到下一個模型
+	glutAttachMenu(GLUT_RIGHT_BUTTON); // 右鍵點擊時顯示選單
 
     glutDisplayFunc(display); // 設定顯示函式
     glutReshapeFunc(reshape); // 設定視窗變動時的回調函式
@@ -51,58 +51,173 @@ Displayer::Displayer(int argc, char** argv) {
     glutMotionFunc(mouseMotion); // 設定滑鼠拖動事件的回調
     glutTimerFunc(1000 / 60, timer, 1000 / 60); // 設定畫面更新的時間
 
-    models.reserve(20); // 預留空間以提高性能
+    models.reserve(20); // 預留模型列表的空間以提高性能
+}
+
+// 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+void getXYZAxisWorld(size_t index, glm::vec3 &xAxis, glm::vec3 &yAxis, glm::vec3 &zAxis) {
+    // 將世界座標系下的 x 軸向量轉換到該模型的座標系下
+    glm::vec4 o = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    glm::vec4 p = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    xAxis = glm::normalize(p-o); // 計算 X 軸方向 (模型坐標系)
+
+    // 將世界座標系下的 y 軸向量轉換到該模型的座標系下
+    o = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    p = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    yAxis = glm::normalize(p-o); // 計算 Y 軸方向 (模型坐標系)
+
+    // 將世界座標系下的 Z 軸向量轉換到該模型的座標系下
+    o = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    p = glm::inverse(Displayer::models[index]->mvMatrix) * glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+    zAxis = glm::normalize(p-o); // 計算 Z 軸方向 (模型坐標系)
+}
+
+// 縮放模型列表中指定索引的模型
+#define stride(x) min(pow(0.1f * x, 2.0f), 0.5f) // 根據深度計算移動步長
+void zoomModel(int button, size_t index, glm::vec4 &oWorld) {
+    // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+    glm::vec3 xAxis, yAxis, zAxis;
+    getXYZAxisWorld(index, xAxis, yAxis, zAxis);
+
+    // 根據滾輪方向決定靠近或遠離，同時根據指定模型之姿態矩陣計算距離鏡頭之深度決定移動速度
+    // 越近則移動越慢；越遠則移動越快
+    zAxis = (button == 3 ? stride(abs(oWorld.z)) * zAxis : -stride(abs(oWorld.z)) * zAxis);
+    Displayer::models[index]->translate(zAxis);
+}
+
+// 同時縮放模型列表中所有模型
+void zoomAllModel(int button) {
+    // 先計算當前模型(索引為modelIndex)中心點在世界坐標系下的座標
+    glm::vec4 oWorld = Displayer::models[Displayer::modelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    for(size_t i = 0; i < Displayer::models.size(); ++i) { // 遍歷模型列表
+        zoomModel(button, i, oWorld); // 縮放指定模型
+    }
+}
+
+// 滑鼠滾動時的處理函數
+void mouseScroll(int button) {
+    if(!Displayer::models.empty()) { // 如果模型列表中有模型
+        if(Displayer::freezeMode) { // 如果是鎖定模式
+            zoomAllModel(button); // 縮放所有模型
+        }else {
+            // 計算當前模型中心在視圖中的深度
+            glm::vec4 oWorld = Displayer::models[Displayer::modelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+            zoomModel(button, Displayer::modelIndex, oWorld); // 縮放指定模型
+        }
+    }
 }
 
 // 處理滑鼠事件的函式
 void Displayer::mouse(int button, int state, int x, int y) {
-    // 記錄按下時的鼠標座標
+    // 處理滑鼠按下事件
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        btnDownX = x; btnDownY = y;
-        dragging = true; // 開始拖動
+        btnDownX = x; btnDownY = y; // 記錄按下時的鼠標座標
+        dragging = true; // 狀態為開始拖動
     }
-    // 當滑鼠按鍵釋放時，停止拖動
+    // 當滑鼠按鍵釋放時
     else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-        dragging = false; // 停止拖動
+        dragging = false; // 狀態為停止拖動
     }
-    // 滾輪向上放大、向下縮小
-    #define stride(x) min(pow(0.1f * x, 2.0f), 0.5f) // 根據深度計算移動步長
-    else if(button == 3 || button == 4) {
-        if(modelIndex != -1) {
-            if(freezeMode) {
-                // 計算模型中心在視圖中的深度
-                glm::vec4 depth = models[modelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                for(size_t i = 0; i < models.size(); ++i) {
-                    if (models[i] != nullptr) {
-                        glm::vec4 o = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                        glm::vec4 p = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-                        glm::vec3 zAxis = glm::normalize(p-o); // 計算 Z 軸方向 (模型坐標系)
+    // 當滾輪滾動時
+    else if(button == 3 || button == 4) { // 3 表示滾輪向前滾動，4 表示滾輪向後滾動
+        mouseScroll(button); // 縮放模型
+    }
+}
 
-                        // 根據滾輪方向決定移動方向
-                        zAxis = (button == 3 ? stride(abs(depth.z)) * zAxis : -stride(abs(depth.z)) * zAxis);
-                        models[i]->translate(zAxis); // 向前移動模型
-                    } else {
-                        std::cerr << "Model at index " << i << " is null!" << std::endl;
-                    }
+// 在世界坐標系的觀點下旋轉模型
+void rotateModelWorld(int index, int dx, int dy) {
+    // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+    glm::vec3 xAxis, yAxis, zAxis;
+    getXYZAxisWorld(index, xAxis, yAxis, zAxis);
 
-                }
-            }
-            else if (models[modelIndex] != nullptr) {
-                glm::vec4 o = glm::inverse(models[modelIndex]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                glm::vec4 p = glm::inverse(models[modelIndex]->mvMatrix) * glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-                glm::vec3 zAxis = glm::normalize(p-o); // 計算 Z 軸方向 (模型坐標系)
+    // 先計算模型(索引為index)中心點在世界坐標系下的座標
+    glm::vec4 oWorld = Displayer::models[index]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-                // 計算模型中心在視圖中的深度
-                glm::vec4 depth = models[modelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    // 繞世界坐標系下的 x、y 軸旋轉物件
+    Displayer::models[index]->rotate(dy * 0.1f, xAxis);
+    Displayer::models[index]->rotate(dx * 0.1f, yAxis);
+}
 
-                // 根據滾輪方向決定移動方向
-                // 如果深度小於 20.0f，則移動模型
-                zAxis = (button == 3 ? stride(abs(depth.z)) * zAxis : -stride(abs(depth.z)) * zAxis);
-                models[modelIndex]->translate(zAxis); // 向前移動模型
-            } else {
-                std::cerr << "Model at index " << modelIndex << " is null!" << std::endl;
-            }
-        }
+// 在世界坐標系的觀點下平移模型
+void translateModelWorld(int index, int dx, int dy) {
+    // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+    glm::vec3 xAxis, yAxis, zAxis;
+    getXYZAxisWorld(index, xAxis, yAxis, zAxis);
+
+    // 先計算模型(索引為index)中心點在世界坐標系下的座標
+    glm::vec4 oWorld = Displayer::models[index]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    // 繞世界坐標系下的 x、y 軸平移物件
+    Displayer::models[index]->translate(0.05f * stride(abs(oWorld.z)) * dx * xAxis);
+    Displayer::models[index]->translate(-0.05f * stride(abs(oWorld.z)) * dy * yAxis);
+}
+
+// 鎖定模式下的旋轉方法
+// 以指定模型為中心點，旋轉所有物件
+void rotateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
+    // 保存舊的中央模型姿態
+    glm::mat4 mvMatrixOld = Displayer::models[centralModelIndex]->mvMatrix; 
+
+    rotateModelWorld(centralModelIndex, dx, dy); // 旋轉中央模型
+
+    // 旋轉剩下的模型
+    for(size_t i = 0; i < Displayer::models.size(); ++i) {
+        if(i == centralModelIndex) { continue; } // 跳過中央模型
+        // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+        glm::vec3 xAxis, yAxis, zAxis;
+        getXYZAxisWorld(i, xAxis, yAxis, zAxis);
+
+        // 計算該模型原點在世界座標中的位置，以及主要模型(索引為modelIndex)坐標系的位置
+        glm::vec4 oWorld = Displayer::models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        glm::vec4 oMain = glm::inverse(mvMatrixOld) * oWorld;
+        
+        // 旋轉模型
+        Displayer::models[i]->rotate(dy * 0.1f, xAxis);
+        Displayer::models[i]->rotate(dx * 0.1f, yAxis);
+
+        // 計算該物件原點需要在世界座標中的位置
+        glm::vec4 oWorldNew = Displayer::models[centralModelIndex]->mvMatrix * oMain;
+
+        // 計算到達新位置需要的向量
+        glm::vec4 newVector = glm::inverse(Displayer::models[i]->mvMatrix) * oWorldNew;
+
+        // 移動到新的位置
+        Displayer::models[i]->translate(glm::vec3(newVector));
+    }
+}
+
+// 鎖定模式下的平移方法
+void translateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
+    // 平移所有物件
+    for(size_t i = 0; i < Displayer::models.size(); ++i) {
+        // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
+        glm::vec3 xAxis, yAxis, zAxis;
+        getXYZAxisWorld(i, xAxis, yAxis, zAxis);
+        
+        // 先計算模型中心點在世界坐標系下的座標
+        glm::vec4 oWorld = Displayer::models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+        // 平移模型
+        Displayer::models[i]->translate(0.05f * stride(abs(oWorld.z)) * dx * xAxis);
+        Displayer::models[i]->translate(-0.05f * stride(abs(oWorld.z)) * dy * yAxis);
+    }
+}
+
+// 根據是否為鎖定模式選擇旋轉方法
+void fRotateModelWorld(bool freezed, size_t index, int dx, int dy) {
+    if(!freezed) {
+        rotateModelWorld(index, dx, dy);
+    }else {
+        rotateModelWorldFreeze(index, dx, dy);
+    }
+}
+
+// 根據是否為鎖定模式選擇平移方法
+void fTranslateModelWorld(bool freezed, size_t index, int dx, int dy) {
+    if(!freezed) {
+        translateModelWorld(index, dx, dy);
+    }else {
+        translateModelWorldFreeze(index, dx, dy);
     }
 }
 
@@ -112,77 +227,16 @@ void Displayer::mouseMotion(int x, int y) {
     if (dragging) {
         int dx = x - btnDownX; // 計算 X 軸的變化量
         int dy = y - btnDownY; // 計算 Y 軸的變化量
-
-        if(!models.empty()) {
-            if (models[modelIndex] != nullptr) {
-                glm::mat4 mvMatrixOld = models[modelIndex]->mvMatrix; // 保存舊的模型視圖矩陣
-                glm::vec4 o = glm::inverse(models[modelIndex]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                glm::vec4 p = glm::inverse(models[modelIndex]->mvMatrix) * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-                glm::vec3 xAxis = glm::normalize(p-o); // 計算 X 軸方向 (模型坐標系)
-
-                o = glm::inverse(models[modelIndex]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                p = glm::inverse(models[modelIndex]->mvMatrix) * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-                glm::vec3 yAxis = glm::normalize(p-o); // 計算 Y 軸方向 (模型坐標系)
-
-                // 計算模型中心在視圖中的深度
-                glm::vec4 depth = models[modelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-                // 繞 X 軸和 Y 軸旋轉或平移模型 (模型坐標系)
-                if(rotationMode) {
-                    models[modelIndex]->rotate(dy * 0.1f, xAxis);
-                    models[modelIndex]->rotate(dx * 0.1f, yAxis);
-                } else if(transitionMode) {
-                    models[modelIndex]->translate(0.05f * stride(abs(depth.z)) * dx * xAxis); // 平移模型
-                    models[modelIndex]->translate(-0.05f * stride(abs(depth.z)) * dy * yAxis); // 平移模型
-                } else {
-                    std::cerr << "Unknown mode!" << std::endl;
-                }
-
-                if(freezeMode) {
-                    for(size_t i = 0; i < models.size(); ++i) {
-                        if(i != modelIndex && models[i] != nullptr) {
-                            //計算該模型原點在世界座標中的位置和主要模型坐標系的位置
-                            glm::vec4 ow = models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                            glm::vec4 oMain = glm::inverse(mvMatrixOld) * ow;
-
-                            glm::vec4 a = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                            glm::vec4 b = glm::inverse(models[i]->mvMatrix) * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-                            xAxis = glm::normalize(b-a);
-
-                            a = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-                            b = glm::inverse(models[i]->mvMatrix) * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-                            yAxis = glm::normalize(b-a);
-
-                            // 繞 X 軸和 Y 軸旋轉或平移模型 (模型坐標系)
-                            if(rotationMode) {
-                                models[i]->rotate(dy * 0.1f, xAxis);
-                                models[i]->rotate(dx * 0.1f, yAxis);
-
-                                // //計算該物件原點需要在世界座標中的位置
-                                glm::vec4 owNew = models[modelIndex]->mvMatrix * oMain;
-
-                                // //計算到達新位置需要的向量
-                                glm::vec4 owNewVector = glm::inverse(models[i]->mvMatrix) * owNew;
-
-                                // //移動到新的位置
-                                models[i]->translate(glm::vec3(owNewVector));
-                            } 
-                            else if(transitionMode) {
-                                models[i]->translate(0.05f * stride(abs(depth.z)) * dx * xAxis); // 平移模型
-                                models[i]->translate(-0.05f * stride(abs(depth.z)) * dy * yAxis); // 平移模型
-                            } else {
-                                std::cerr << "Unknown mode!" << std::endl;
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                std::cerr << "Model at index " << modelIndex << " is null!" << std::endl;
-            }
+        
+        // 繞世界坐標系下的 x、y 軸，旋轉或平移模型
+        if(rotationMode) {
+            fRotateModelWorld(freezeMode, modelIndex, dx, dy);
+        } else if(transitionMode) {
+            fTranslateModelWorld(freezeMode, modelIndex, dx, dy);
         }
 
-        btnDownX = x; // 更新按下位置
+        // 更新按下位置
+        btnDownX = x; 
         btnDownY = y;
     }
 }
@@ -198,19 +252,10 @@ void Displayer::menu(int id) {
         transitionMode = true; // 確保旋轉模式被禁用
     } 
     else if (id == FREEZE_MODE) {
-        freezeMode = !freezeMode;
+        freezeMode = !freezeMode; // 切換鎖定模式
     } 
     else if(id == NEXT) {
-        // 切換到下一個模型
-        if (models.size() > 0) {
-            modelIndex = (modelIndex + 1) % models.size(); // 循環切換模型索引
-            std::cout << "Switched to model index: " << modelIndex << std::endl;
-        } else {
-            std::cerr << "No models available to switch!" << std::endl;
-        }
-    }
-    else {
-        std::cerr << "Unknown menu option selected: " << id << std::endl;
+        modelIndex = (models.size() > 0) ? ((modelIndex + 1) % models.size()) : -1; // 循環切換模型索引
     }
 }
 
@@ -221,11 +266,7 @@ void Displayer::display() {
 
     // 繪製所有模型
     for(size_t i = 0; i < models.size(); ++i) {
-        if (models[i] != nullptr) {
-            models[i]->draw(); // 繪製模型
-        } else {
-            std::cerr << "Model at index " << i << " is null!" << std::endl;
-        }
+        models[i]->draw(); // 繪製模型
     }
 
     // 交換緩衝區
@@ -238,11 +279,7 @@ void Displayer::reshape(int width, int height) {
     float viewportAspect = (float)width / (float)height;
 
     for(size_t i = 0; i < models.size(); ++i) {
-        if (models[i] != nullptr) {
-            models[i]->projMatrix = glm::perspective(deg2rad(50.0f), viewportAspect, 0.1f, 100.0f);
-        } else {
-            std::cerr << "Model at index " << i << " is null!" << std::endl;
-        }
+        models[i]->projMatrix = glm::perspective(deg2rad(50.0f), viewportAspect, 0.1f, 100.0f);
     }
 }
 

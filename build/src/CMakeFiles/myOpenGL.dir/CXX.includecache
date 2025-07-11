@@ -52,6 +52,10 @@ iostream
 GL/glew.h
 -
 
+/home/pinecone/OpenGLPractice/src/cubeModel.cpp
+cubeModel.h
+/home/pinecone/OpenGLPractice/src/cubeModel.h
+
 /home/pinecone/OpenGLPractice/src/displayer.cpp
 displayer.h
 /home/pinecone/OpenGLPractice/src/displayer.h
