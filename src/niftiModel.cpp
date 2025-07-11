@@ -119,22 +119,8 @@ niftiModel::niftiModel(const string niftiFilePath, glm::mat4 &mvMatrixClipPlane)
     // 取得 Voxel offset
     float voxelOffset = niftiReaderInsdance.getVoxelOffset(bytesVector);
 
-    // 尋找最大體素值
-    short maxValue = std::numeric_limits<short>::lowest(); // 初始化最大值為最小的 short 值
-    for (int z = 0; z < dim[3]; ++z) {
-        for (int y = 0; y < dim[2]; ++y) {
-            for (int x = 0; x < dim[1]; ++x) {
-                // 取得對應的 Voxel 值
-                short voxelValue = niftiReaderInsdance.getVoxelValue(bytesVector, dim, voxelOffset, x, y, z);
-
-                // 更新最大值
-                if (voxelValue > maxValue) { maxValue = voxelValue; }
-            }
-        }
-    }
-
     // 計算縮放係數
-    float scaleFactor = 255.0f / static_cast<float>(maxValue);
+    float scaleFactor = 255.0f / 500.0f;
 
     // 把每個體素讀取出來並儲存
     unsigned char* volumeData = new unsigned char[256 * 256 * 256]; // 假設體積大小為 256x256x256
@@ -149,6 +135,10 @@ niftiModel::niftiModel(const string niftiFilePath, glm::mat4 &mvMatrixClipPlane)
                             niftiReaderInsdance.getVoxelValue(bytesVector, dim, voxelOffset, x-32, y, z)
                         )
                     );
+                    
+                    // 確保數值範圍正確
+                    voxelValue = voxelValue > 255 ? 255 : voxelValue;
+                    voxelValue = voxelValue < 0 ? 0 : voxelValue;
                     
                     // 儲存到 volumeData 中
                     size_t index = x + y * 256 + z * 256 * 256;

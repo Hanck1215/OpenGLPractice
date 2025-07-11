@@ -11,7 +11,6 @@
 #define ROTATION_MODE	1
 #define TRANSITION_MODE	2
 #define FREEZE_MODE		3
-#define NEXT		    4
 
 class Displayer {
     public:

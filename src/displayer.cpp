@@ -42,7 +42,6 @@ Displayer::Displayer(int argc, char** argv) {
 	glutAddMenuEntry("ROTATION_MODE", ROTATION_MODE); // 滑鼠旋轉模式
 	glutAddMenuEntry("TRANSITION_MODE", TRANSITION_MODE); // 滑鼠平移模式
     glutAddMenuEntry("FREEZE_MODE", FREEZE_MODE); // 以當前選擇之模型為中心，同時操作所有物件
-    glutAddMenuEntry("NEXT", NEXT); // 切換到下一個模型
 	glutAttachMenu(GLUT_RIGHT_BUTTON); // 右鍵點擊時顯示選單
 
     glutDisplayFunc(display); // 設定顯示函式
@@ -196,13 +195,12 @@ void rotateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
 // 鎖定模式下的平移方法
 void translateModelWorldFreeze(int centralModelIndex, int dx, int dy) {
     // 平移所有物件
+    // 先計算模型中心點在世界坐標系下的座標
+    glm::vec4 oWorld = Displayer::models[centralModelIndex]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
     for(size_t i = 0; i < Displayer::models.size(); ++i) {
         // 計算世界座標系下的 XYZ 軸向量轉換到指定模型的坐標系下
         glm::vec3 xAxis, yAxis, zAxis;
         getXYZAxisWorld2Model(i, xAxis, yAxis, zAxis);
-        
-        // 先計算模型中心點在世界坐標系下的座標
-        glm::vec4 oWorld = Displayer::models[i]->mvMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
         // 平移模型
         Displayer::models[i]->mvMatrix = glm::translate(Displayer::models[i]->mvMatrix, 0.05f * stride(abs(oWorld.z)) * dx * xAxis); 
@@ -260,9 +258,6 @@ void Displayer::menu(int id) {
     } 
     else if (id == FREEZE_MODE) {
         freezeMode = !freezeMode; // 切換鎖定模式
-    } 
-    else if(id == NEXT) {
-        modelIndex = (models.size() > 0) ? ((modelIndex + 1) % models.size()) : -1; // 循環切換模型索引
     }
 }
 
