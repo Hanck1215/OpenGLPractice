@@ -8,4 +8,5 @@ test/CMakeFiles/test002.dir/test002.cpp.o
  ../include/niftiModel.h
  ../include/niftiReader.h
  ../include/shaderReader.h
+ ../include/sliceModel.h
  /home/pinecone/OpenGLPractice/test/test002.cpp

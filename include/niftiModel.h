@@ -11,7 +11,7 @@ using namespace std;
 
 class niftiModel : public model {
     public:
-        niftiModel(const string niftiFilePath);
+        niftiModel(const string niftiFilePath, glm::mat4 &mvMatrixClipPlane);
         ~niftiModel() {}
 
         niftiReader niftiReaderInsdance; // Nifti 檔案讀取器實例
@@ -42,6 +42,10 @@ class niftiModel : public model {
 
         // 3D 紋理位置
         GLint volumeLocation;
+
+        // 裁切平面位置
+        glm::mat4* mvMatrixClipPlane; // 裁切平面矩陣姿態
+        GLint clipPlaneLocation; 
 };
 
 #endif

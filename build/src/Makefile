@@ -260,6 +260,33 @@ shaderReader.cpp.s:
 	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.s
 .PHONY : shaderReader.cpp.s
 
+sliceModel.o: sliceModel.cpp.o
+
+.PHONY : sliceModel.o
+
+# target to build an object file
+sliceModel.cpp.o:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o
+.PHONY : sliceModel.cpp.o
+
+sliceModel.i: sliceModel.cpp.i
+
+.PHONY : sliceModel.i
+
+# target to preprocess a source file
+sliceModel.cpp.i:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.i
+.PHONY : sliceModel.cpp.i
+
+sliceModel.s: sliceModel.cpp.s
+
+.PHONY : sliceModel.s
+
+# target to generate assembly for a file
+sliceModel.cpp.s:
+	cd /home/pinecone/OpenGLPractice/build && $(MAKE) -f src/CMakeFiles/myOpenGL.dir/build.make src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.s
+.PHONY : sliceModel.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -284,6 +311,9 @@ help:
 	@echo "... shaderReader.o"
 	@echo "... shaderReader.i"
 	@echo "... shaderReader.s"
+	@echo "... sliceModel.o"
+	@echo "... sliceModel.i"
+	@echo "... sliceModel.s"
 .PHONY : help
 
 

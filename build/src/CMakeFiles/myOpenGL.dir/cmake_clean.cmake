@@ -6,6 +6,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/myOpenGL.dir/niftiModel.cpp.o"
   "CMakeFiles/myOpenGL.dir/niftiReader.cpp.o"
   "CMakeFiles/myOpenGL.dir/shaderReader.cpp.o"
+  "CMakeFiles/myOpenGL.dir/sliceModel.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

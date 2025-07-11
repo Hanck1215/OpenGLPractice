@@ -76,9 +76,17 @@ iostream
 GL/glew.h
 -
 
+../include/sliceModel.h
+shaderReader.h
+../include/shaderReader.h
+model.h
+../include/model.h
+
 /home/pinecone/OpenGLPractice/test/test002.cpp
 displayer.h
 /home/pinecone/OpenGLPractice/test/displayer.h
 niftiModel.h
 /home/pinecone/OpenGLPractice/test/niftiModel.h
+sliceModel.h
+/home/pinecone/OpenGLPractice/test/sliceModel.h
 

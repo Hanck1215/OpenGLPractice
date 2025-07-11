@@ -24,3 +24,8 @@ src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o
 src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o
  ../include/shaderReader.h
  /home/pinecone/OpenGLPractice/src/shaderReader.cpp
+src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o
+ ../include/model.h
+ ../include/shaderReader.h
+ ../include/sliceModel.h
+ /home/pinecone/OpenGLPractice/src/sliceModel.cpp

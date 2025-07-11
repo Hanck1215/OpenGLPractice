@@ -1,55 +1,15 @@
-#include "cubeModel.h"
+#include "sliceModel.h"
 
-cubeModel::cubeModel() {
+sliceModel::sliceModel() {
     // 設定頂點數據
-    vertexPositions = new GLfloat[36 * 3] {
-        -0.25f,  0.25f, -0.25f,
-        -0.25f, -0.25f, -0.25f,
-        0.25f, -0.25f, -0.25f,
+    vertexPositions = new GLfloat[18] {
+        -0.5f,  0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
 
-        0.25f, -0.25f, -0.25f,
-        0.25f,  0.25f, -0.25f,
-        -0.25f,  0.25f, -0.25f,
-
-        0.25f, -0.25f, -0.25f,
-        0.25f, -0.25f,  0.25f,
-        0.25f,  0.25f, -0.25f,
-
-        0.25f, -0.25f,  0.25f,
-        0.25f,  0.25f,  0.25f,
-        0.25f,  0.25f, -0.25f,
-
-        0.25f, -0.25f,  0.25f,
-        -0.25f, -0.25f,  0.25f,
-        0.25f,  0.25f,  0.25f,
-
-        -0.25f, -0.25f,  0.25f,
-        -0.25f,  0.25f,  0.25f,
-        0.25f,  0.25f,  0.25f,
-
-        -0.25f, -0.25f,  0.25f,
-        -0.25f, -0.25f, -0.25f,
-        -0.25f,  0.25f,  0.25f,
-
-        -0.25f, -0.25f, -0.25f,
-        -0.25f,  0.25f, -0.25f,
-        -0.25f,  0.25f,  0.25f,
-
-        -0.25f, -0.25f,  0.25f,
-        0.25f, -0.25f,  0.25f,
-        0.25f, -0.25f, -0.25f,
-
-        0.25f, -0.25f, -0.25f,
-        -0.25f, -0.25f, -0.25f,
-        -0.25f, -0.25f,  0.25f,
-
-        -0.25f,  0.25f, -0.25f,
-        0.25f,  0.25f, -0.25f,
-        0.25f,  0.25f,  0.25f,
-
-        0.25f,  0.25f,  0.25f,
-        -0.25f,  0.25f,  0.25f,
-        -0.25f,  0.25f, -0.25f
+        0.5f, -0.5f, 0.0f,
+        0.5f,  0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
     };
     
     // 初始化著色器讀取器
@@ -61,8 +21,8 @@ cubeModel::cubeModel() {
     // 讀取著色器檔案並將其轉換為二進位數據
     char** vsBytes;
     char** fsBytes;
-    shaderReaderInstance.readShaderAsBytes("./glsl/testShader.vs.glsl", vsBytes);
-    shaderReaderInstance.readShaderAsBytes("./glsl/testShader.fs.glsl", fsBytes);
+    shaderReaderInstance.readShaderAsBytes("./glsl/sliceShader.vs.glsl", vsBytes);
+    shaderReaderInstance.readShaderAsBytes("./glsl/sliceShader.fs.glsl", fsBytes);
 
     // 設定著色器源碼
     glShaderSource(vs, 1, vsBytes, NULL);
@@ -103,24 +63,24 @@ cubeModel::cubeModel() {
     // 設定頂點屬性指針
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(0);
-    glBufferData(GL_ARRAY_BUFFER, 36 * 3 * sizeof(GLfloat), vertexPositions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(GLfloat), vertexPositions, GL_STATIC_DRAW);
 }
 
 // 平移模型視圖矩陣
-void cubeModel::translate(glm::vec3 axis) { 
+void sliceModel::translate(glm::vec3 axis) { 
     mvMatrix = glm::translate(mvMatrix, axis); 
 }
 
 // 旋轉模型視圖矩陣
-void cubeModel::rotate(float angle, glm::vec3 axis) {
+void sliceModel::rotate(float angle, glm::vec3 axis) {
     mvMatrix = glm::rotate(mvMatrix, glm::radians(angle), axis);
 }
 
-void cubeModel::draw() {
+void sliceModel::draw() {
     // 使用著色器程序
     glUseProgram(program);
 
-    glDepthMask(GL_TRUE); // 禁用深度寫入，確保切片不會被其他物體遮擋
+    glDepthMask(GL_FALSE); // 禁用深度寫入，確保切片不會被其他物體遮擋
 
     // 更新模型視圖和投影矩陣
     glUniformMatrix4fv(mvLocation, 1, GL_FALSE, &mvMatrix[0][0]);

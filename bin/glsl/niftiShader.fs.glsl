@@ -1,8 +1,11 @@
 #version 410
+#extension GL_ARB_explicit_uniform_location : require
 
 layout(location = 0) in vec3 texCoord;
 layout(location = 1) in vec3 camPos;
 layout(location = 2) in mat4 mvMatrix;
+
+layout(location = 2) uniform mat4 clipPlaneMatrix;
 
 layout(location = 0) out vec4 color;
 uniform sampler3D volume;
@@ -32,10 +35,16 @@ void main(void) {
 		stop = dot(sign(dataPos - texMin), sign(texMax - dataPos)) < 3.0;
 		if(stop) { break; }
 
-		vec4 vSample = texture(volume, dataPos); // 取得採樣點顏色值和不透明度
 		vec4 wDataPos = mvMatrix * vec4(dataPos - vec3(0.5), 1.0); // 得到此材質取樣點在世界座標中的位置
+		vec4 cDataPos = inverse(clipPlaneMatrix) * wDataPos; // 取得材質採樣點在裁切平面坐標系中的位置
 
-		vSample.a = vSample.r;
+		vec4 vSample = texture(volume, dataPos); // 取得採樣點顏色值和不透明度
+
+		if (cDataPos.z > 0) { // 如果採樣點在裁切平面後方，就不顯示
+			vSample.a = 0.0;
+		}else {
+			vSample.a = vSample.r;
+		}
 
 		cumulated[0] += vSample.r * vSample[3] * (1-cumulated[3]);
 		cumulated[1] += vSample.g * vSample[3] * (1-cumulated[3]);

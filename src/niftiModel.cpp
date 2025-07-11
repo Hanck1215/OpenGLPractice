@@ -1,6 +1,6 @@
 #include "niftiModel.h"
 
-niftiModel::niftiModel(const string niftiFilePath) {
+niftiModel::niftiModel(const string niftiFilePath, glm::mat4 &mvMatrixClipPlane) {
     // 頂點數據 (頂點位置、材質座標)
     float data[] = {
         -0.5f,  0.5f, -0.5f,    0.0f, 1.0f, 0.0f,
@@ -174,6 +174,10 @@ niftiModel::niftiModel(const string niftiFilePath) {
     // 把數據上傳到 GPU
     glTexImage3D(GL_TEXTURE_3D, 0, GL_RED, 256, 256, 256, 0, GL_RED, GL_UNSIGNED_BYTE, volumeData);
     delete[] volumeData; // 釋放體積數據
+
+    // 設置裁切平面矩陣
+    this->mvMatrixClipPlane = &mvMatrixClipPlane;
+    clipPlaneLocation = glGetUniformLocation(program, "clipPlaneMatrix");
 }
 
 // 平移模型視圖矩陣
@@ -190,9 +194,12 @@ void niftiModel::draw() {
     // 使用著色器程序
     glUseProgram(program);
 
+    glDepthMask(GL_FALSE); // 禁用深度寫入，確保切片不會被其他物體遮擋
+
     // 更新模型視圖和投影矩陣
     glUniformMatrix4fv(mvLocation, 1, GL_FALSE, &mvMatrix[0][0]);
     glUniformMatrix4fv(projLocation, 1, GL_FALSE, &projMatrix[0][0]);
+    glUniformMatrix4fv(clipPlaneLocation, 1, GL_FALSE, &(*mvMatrixClipPlane)[0][0]);
 
     // 綁定 VAO 並繪製模型
     glBindVertexArray(vao);

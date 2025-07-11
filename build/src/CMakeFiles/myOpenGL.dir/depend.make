@@ -24,3 +24,8 @@ src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o: ../src/niftiReader.cpp
 src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o: ../include/shaderReader.h
 src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o: ../src/shaderReader.cpp
 
+src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o: ../include/model.h
+src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o: ../include/shaderReader.h
+src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o: ../include/sliceModel.h
+src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o: ../src/sliceModel.cpp
+

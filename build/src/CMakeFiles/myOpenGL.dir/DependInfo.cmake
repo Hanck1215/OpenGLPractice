@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pinecone/OpenGLPractice/src/niftiModel.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/niftiModel.cpp.o"
   "/home/pinecone/OpenGLPractice/src/niftiReader.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/niftiReader.cpp.o"
   "/home/pinecone/OpenGLPractice/src/shaderReader.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/shaderReader.cpp.o"
+  "/home/pinecone/OpenGLPractice/src/sliceModel.cpp" "/home/pinecone/OpenGLPractice/build/src/CMakeFiles/myOpenGL.dir/sliceModel.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
