@@ -19,11 +19,17 @@ void main(void) {
 	vec3 lightDir; //光線步進方向
 
 	// 當相機也就是視點位於體渲染物件內部時，起始點應該改為相機視點的位置座標作為起始點
+	bool isInTexture = false;
 	if(abs(camPos.x) <= 0.5 && abs(camPos.y) <= 0.5 && abs(camPos.z) <= 0.5) {
-		dataPos = camPos + vec3(0.5);
+		isInTexture = true;
 	}
 
-	lightDir = normalize((texCoord - vec3(0.5)) - camPos);
+	if(isInTexture) {
+		lightDir = normalize(camPos - (texCoord - vec3(0.5)));
+	}else {
+		lightDir = normalize((texCoord - vec3(0.5)) - camPos);
+	}
+	
 	vec3 step = lightDir * 0.005;
 
 	bool stop = false;
@@ -40,7 +46,7 @@ void main(void) {
 
 		vec4 vSample = texture(volume, dataPos); // 取得採樣點顏色值和不透明度
 
-		if (cDataPos.z > 0) { // 如果採樣點在裁切平面後方，就不顯示
+		if (cDataPos.z > 0 || wDataPos.z > 0) { // 如果採樣點在裁切平面或相機後方，就不顯示
 			vSample.a = 0.0;
 		}else {
 			vSample.a = vSample.r;
