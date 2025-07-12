@@ -6,26 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../include/cubeModel.h
-shaderReader.h
-../include/shaderReader.h
-model.h
-../include/model.h
-
-../include/displayer.h
-GL/glew.h
--
-GL/freeglut.h
--
-cstdio
--
-iostream
--
-model.h
-../include/model.h
-cubeModel.h
-../include/cubeModel.h
-
 ../include/model.h
 GL/glew.h
 -
@@ -34,6 +14,30 @@ glm/glm.hpp
 glm/gtx/rotate_vector.hpp
 -
 glm/gtx/string_cast.hpp
+-
+
+../include/niftiModel.h
+string
+-
+limits
+-
+model.h
+../include/model.h
+shaderReader.h
+../include/shaderReader.h
+niftiReader.h
+../include/niftiReader.h
+
+../include/niftiReader.h
+vector
+-
+string
+-
+ios
+-
+fstream
+-
+cstring
 -
 
 ../include/shaderReader.h
@@ -52,7 +56,7 @@ iostream
 GL/glew.h
 -
 
-/home/pinecone/OpenGLPractice/src/displayer.cpp
-displayer.h
-/home/pinecone/OpenGLPractice/src/displayer.h
+/home/pinecone/OpenGLPractice/src/niftiModel.cpp
+niftiModel.h
+/home/pinecone/OpenGLPractice/src/niftiModel.h
 

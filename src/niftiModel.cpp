@@ -130,10 +130,21 @@ niftiModel::niftiModel(const string niftiFilePath, glm::mat4 &mvMatrixClipPlane)
             for (int x = 0; x < 256; ++x) {
                 // 取得對應的 Voxel 值，同時壓縮到 0-255 範圍內
                 if(x > 31 && x < 224) {
+                    // 取得原始 voxel 值
+                    float rawVoxelValue = static_cast<float>(
+                        niftiReaderInsdance.getVoxelValue(bytesVector, dim, voxelOffset, x-32, y, z)
+                    );
+                    
+                    // 帶限濾波
+                    if(rawVoxelValue < 50.0f) {
+                        rawVoxelValue *= (0.001f * rawVoxelValue);
+                    }else if(rawVoxelValue > 500.0f) {
+                        rawVoxelValue *= (0.1f * (1.0f/rawVoxelValue));
+                    }
+
+                    // 壓縮數值
                     short voxelValue = static_cast<short>(
-                        scaleFactor * static_cast<float>(
-                            niftiReaderInsdance.getVoxelValue(bytesVector, dim, voxelOffset, x-32, y, z)
-                        )
+                        scaleFactor * rawVoxelValue
                     );
                     
                     // 確保數值範圍正確
